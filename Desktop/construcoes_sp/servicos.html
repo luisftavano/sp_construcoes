@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon_azul_logo.png" type="image/x-icon">
+    
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="96x96" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="520x520" type="image/png">
+    <title>SP Construções e Reformas Ltda.</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; 
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        p {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        header {
+            position: relative; 
+            overflow: hidden; 
+            height: 30vh; 
+            background-image: url('images/imagem_fundo_header.png'); 
+            background-size: cover; 
+            background-position: center; 
+        }
+
+        .header-content {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            color: white; 
+            z-index: 1; 
+        }
+
+        
+        .menu-container {
+            position: absolute; 
+            top: 20px; 
+            width: 100%; 
+            text-align: center; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex; 
+            justify-content: center; 
+        }
+
+        nav ul li {
+            margin-left: 30px; 
+        }
+        nav ul li:hover {
+            animation: pulse 1s infinite; 
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white; 
+            font-weight: bold;
+            font-size: 1.5rem; 
+        }
+         /* Submenu */
+         .submenu {
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            left: 60%; 
+            transform: translateX(-50%); 
+            background-color: rgba(0, 0, 0, 0.2); 
+            border-radius: 5px; 
+            padding: 10px 0; 
+            z-index: 10; 
+        }
+
+        nav ul li:hover .submenu {
+            display: block; 
+        }
+
+        .submenu a {
+            display: block; 
+            padding: 10px 20px; 
+            color: white; 
+            text-decoration: none; 
+            font-size: 1.2rem; 
+        }
+
+        .submenu a:hover {
+            background-color: rgba(255, 255, 255, 0.2); 
+        }
+
+        .logo-container {
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+        }
+
+        .logo-container img {
+            width: 180px; 
+            transition: transform 0.3s; 
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.1); 
+        }
+
+        
+        .text-container {
+            position: absolute; 
+            left: 20px; 
+            top: 40%; 
+            transform: translateY(-50%); 
+            color: #fff; 
+            text-align: left; 
+            padding: 15px 25px; 
+            border-radius: 10px; 
+        }
+
+        .text-container h1 {
+            margin: 0;
+            font-size: 2rem; 
+            margin-top: 10px; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); 
+        }
+
+        .servicos-container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px;
+}
+.instrucoes {
+    font-size: 1.0em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: red;
+}
+
+.servicos-grid {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 20px; 
+}
+#servicos {
+    padding: 20px;
+    background-image: url(images/template_sobrenos.jpg);
+    background-size: cover; 
+    background-position: center; 
+}
+
+
+.servico {
+    background-color: #3B5998;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    width: 2450px; 
+    font-size: 18px;
+    cursor:pointer;
+    animation:pulsar 1.5s infinite;
+    color: #fff;
+}
+.servico h3 {
+    color:black;
+}
+@keyframes pulsar {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.servico-expandido {
+  display: none; 
+  padding: 20px;
+  background-color: #3B5998;
+  transition: opacity 0.5s ease;
+}
+
+.servico-expandido.active {
+  display: block;
+  opacity: 1;
+}
+.servico-expandido img{
+    width: 800px;
+
+}
+.servico-expandido p{
+    font-size: 16px;
+    color:white;
+}
+.servico-expandido li{
+    font-size:18px;
+    color:white;
+}
+.servico-expandido strong{
+    color:black;
+}
+
+.servico:hover {
+    transform: scale(1.05);
+}
+
+.servico-imagem {
+    width: 5%;
+    height: auto;
+    border-radius: 8px;
+}
+.imagem-expandida {
+    display: block;     
+    margin: 0 auto;     
+    max-width: 100%;   
+    height: auto; 
+
+}
+
+.cta-button {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.botao {
+    background-color: #007BFF; 
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.botao:hover {
+    background-color: #0056b3;
+}
+
+
+        .footer {
+    background-color: #2D3E4E;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 20px;
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-nav {
+    margin: 15px 0;
+}
+
+.footer-nav a {
+    color: #bbb;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.footer-nav a:hover {
+    color:#3B5998;
+}
+
+.footer-social {
+    margin-top: 10px;
+}
+
+.footer-social a img {
+    width: 20px;
+    margin: 0 8px;
+    filter: grayscale(100%);
+    transition: filter 0.3s;
+}
+
+.footer-social a img:hover {
+    filter: grayscale(0%);
+}
+@keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content" data-aos="fade-down" data-aos-delay="200">
+            <div class="logo-container">
+                <a href="index.html"><img src="images/nova_logo.png" alt="Logo Sp" class="logo"></a>
+            </div>
+            <div class="menu-container" data-aos="fade-down" data-aos-delay="300">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li>
+                            <a href="#">Contato</a>
+                            <div class="submenu">
+                                <a href="mailto:seuemail@example.com">Email</a>
+                                <a href="https://wa.me/5511999999999" target="_blank">WhatsApp</a>
+                                <a href="https://www.instagram.com/seuusuario" target="_blank">Instagram</a>
+                                <a href="https://www.instagram.com/seuusuario" target="_blank">Linkedin</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="text-container" data-aos="fade-up" data-aos-delay="500">
+                <h1>Serviços</h1>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços - SP Construções</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+
+<section id="servicos">
+    <div class="servicos-container">
+        <p class="instrucoes">Clique nos cards para saber mais sobre cada serviço.</p>
+        <div class="servicos-grid">
+
+            
+            <div class="servico" data-aos="fade-up" data-aos-delay="200">
+                <img src="images/icon-const_residencial.svg" alt="Construção Residencial" class="servico-imagem">
+                <h3>Construção Residencial</h3>
+                <p>Na SP Construções e Reformas, somos especializados em construção residencial. Trabalhamos para transformar a sua visão em realidade.</p>
+            </div>
+            <div class="servico-expandido">
+                <img src="images/foto_casa.jpeg" alt="Detalhes de construção" class="imagem-expandida">
+                <p>Na SP Construções e Reformas, oferecemos soluções completas em construção, atendendo tanto o setor residencial quanto o comercial. Nossa equipe é dedicada a criar espaços que atendem às necessidades de nossos clientes, garantindo qualidade e eficiência em cada projeto.
+
+                    Serviços Oferecidos:
+                    <li><strong>Construção Comercial:</strong> Desenvolvimento de ambientes comerciais, adaptados às especificações e necessidades do negócio.</li><br>
+                    <li><strong>Reformas Residenciais:</strong> Renovação e melhoria de ambientes residenciais, otimizando espaço e estética.</li><br>
+                    <li><strong>Reformas Comerciais:</strong> Transformação de espaços comerciais para aumentar a funcionalidade e a atratividade.</li><br>
+                    <li><strong>Consultoria em Engenharia:</strong> Apoio técnico em projetos de construção, garantindo conformidade e segurança.</p></li>
+            </div>
+
+           
+            <div class="servico" data-aos="fade-up" data-aos-delay="400">
+                <img src="images/icon-reformas.svg" alt="Reformas e Renovação" class="servico-imagem">
+                <h3>Reformas e Renovação</h3>
+                <p>Se você deseja renovar seu espaço, nossa equipe está pronta para realizar reformas de todos os tipos, desde pequenas alterações até grandes transformações.</p>
+            </div>
+            <div class="servico-expandido">
+                <img src="images/foto_reforma.jpeg" alt="Detalhes de reformas" class="imagem-expandida">
+                <p>Nossa equipe especializada em reformas e renovações está pronta para transformar seus espaços, melhorando a funcionalidade e a estética de sua casa ou empresa. Realizamos projetos que atendem suas necessidades específicas, garantindo qualidade e eficiência em cada etapa do processo.
+
+                    <li><strong>Reforma de Ambientes:</strong> Atualizamos e revitalizamos cômodos como salas, cozinhas e banheiros.</li>
+<li><strong>Ampliações:</strong> Adicionamos novos espaços à sua residência ou empresa, como quartos, varandas e áreas de lazer.</li>
+<li><strong>Melhorias Estruturais:</strong>Atuamos em modificações que aprimoram a estrutura e segurança do imóvel.</li>
+<li><strong>Personalização de Espaços:</strong> Trabalhamos em conjunto com os clientes para criar ambientes que reflitam seu estilo e funcionalidade.</li>
+                </p>
+            </div>
+
+         
+            <div class="servico" data-aos="fade-up" data-aos-delay="600">
+                <img src="images/icon-pavimento.svg" alt="Pavimento" class="servico-imagem">
+                <h3>Pavimento</h3>
+                <p>Oferecemos serviços de pavimentação para diversos tipos de áreas, incluindo residências, garagens e calçadas.</p>
+            </div>
+            <div class="servico-expandido">
+                <img src="images/foto_pavement.jpeg" alt="Detalhes de pavimentação" class="imagem-expandida">
+                <p>Oferecemos serviços de pavimentação para diversas aplicações, garantindo durabilidade e estética. Utilizamos materiais de alta qualidade e técnicas avançadas para atender às suas necessidades específicas.</p>
+            </div>
+
+            
+            <div class="servico" data-aos="fade-up" data-aos-delay="800">
+                <img src="images/icon-engenharia2.png" alt="Serviços de Engenharia" class="servico-imagem">
+                <h3>Serviços de Engenharia</h3>
+                <p>Nossa equipe é especializada em projetar e executar obras com eficiência.</p>
+            </div>
+            <div class="servico-expandido">
+                <img src="images/foto_servicos.jpeg" alt="Detalhes de engenharia" class="imagem-expandida">
+                <p>Além de nossos serviços especializados, a SP Construções e Reformas oferece uma gama de serviços gerais para atender às diversas necessidades de nossos clientes. Nossa abordagem é focada na qualidade e na satisfação do cliente.
+                    <li><strong>Reformas Residenciais:</strong> Transformamos espaços para atender às suas necessidades, seja em pequenos ou grandes projetos.</li>
+                        <li><strong>Construções Personalizadas:</strong> Realizamos obras de acordo com o seu estilo e preferências.</li>
+                     <li><strong>Manutenção e Reparos:</strong> Serviços de manutenção preventiva e corretiva para garantir a durabilidade das suas estruturas.</li>
+                </p>
+            </div>
+
+        </div>
+        <div class="cta-button" data-aos="fade-up" data-aos-delay="1000">
+            <a href="contato.html" class="botao">Entre em Contato</a>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
+
+    </main>
+    
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <nav class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="sobrenos.html">Sobre Nós</a>
+                <a href="servicos.html">Serviços</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+            <div class="footer-social">
+                <a href="#"><img src="images/emai.svg" alt="Email"></a>
+                <a href="#"><img src="images/instagram.svg" alt="Instagram"></a>
+                <a href="#"><img src="images/linkedin copy.svg" alt="Linkedin"></a>
+                <a href="#"><img src="images/whatsapp.svg" alt="WhatsApp"></a>
+            </div>
+        </div>
+        <p>&copy; Todos os direitos reservados © 2024 | Desenvolvido por <strong>TaSh</strong></p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, 
+            easing: 'ease-in-out', 
+            once: true 
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.servico').forEach(servico => {
+        servico.addEventListener('click', function () {
+            
+            servico.style.display = 'none';
+
+            
+            const servicoExpandido = servico.nextElementSibling;
+            servicoExpandido.classList.add('active');
+        });
+    });
+
+    document.querySelectorAll('.servico-expandido').forEach(servicoExpandido => {
+        servicoExpandido.addEventListener('click', function () {
+            
+            servicoExpandido.classList.remove('active');
+
+           
+            const servico = servicoExpandido.previousElementSibling;
+            servico.style.display = 'block';
+        });
+    });
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="images/favicon_azul_logo.png" type="image/x-icon">
+    
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="96x96" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="192x192" type="image/png">
+    <link rel="icon" href="images/favicon_azul_logo.png" sizes="520x520" type="image/png">
+    <title>SP Construções e Reformas Ltda.</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+        }
+
+        p {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        header {
+            position: relative; 
+            overflow: hidden; 
+            height: 30vh; 
+            background-image: url('images/imagem_fundo_header.png'); 
+            background-size: cover; 
+            background-position: center; 
+        }
+
+        .header-content {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: white; 
+            z-index: 1; 
+        }
+
+        .menu-container {
+            position: absolute; 
+            top: 20px; 
+            width: 100%; 
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+        }
+
+      
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex; 
+            justify-content: center; 
+        }
+
+        nav ul li {
+            margin-left: 30px; 
+        }
+        nav ul li:hover {
+            animation: pulse 1s infinite; 
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem; 
+        }
+
+         .submenu {
+            display: none; 
+            position: absolute; 
+            top: 100%;
+            left: 60%; 
+            transform: translateX(-50%); 
+            background-color: rgba(0, 0, 0, 0.2); 
+            border-radius: 5px; 
+            padding: 10px 0; 
+            z-index: 10; 
+        }
+
+        nav ul li:hover .submenu {
+            display: block; 
+        }
+
+        .submenu a {
+            display: block; 
+            padding: 10px 20px; 
+            color: white; 
+            text-decoration: none;
+            font-size: 1.2rem; 
+        }
+
+        .submenu a:hover {
+            background-color: rgba(255, 255, 255, 0.2); 
+            color:white;
+        }
+
+        .logo-container {
+            position: absolute; 
+            top: 20px;
+            left: 20px; 
+        }
+
+        .logo-container img {
+            width: 180px; 
+            transition: transform 0.3s; 
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .text-container {
+            position: absolute; 
+            left: 20px; 
+            top: 40%; 
+            transform: translateY(-50%);
+            color: #fff; 
+            text-align: left;
+            padding: 15px 25px; 
+            border-radius: 10px; 
+        }
+
+        .text-container h1 {
+            margin: 0;
+            font-size: 2rem; 
+            margin-top: 10px; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9); 
+        }
+
+        main {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-image: url('images/template_sobrenos.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    padding: 40px; 
+    min-height: 60vh; 
+    margin-top: 20px;
+}
+
+
+.about-container {
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 30px; 
+    color: black; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); 
+    max-width: 800px; 
+    margin: 20px; 
+    font-size: 18px;
+}
+
+
+
+        .footer {
+    background-color: #2D3E4E;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 20px;
+}
+
+.footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-nav {
+    margin: 15px 0;
+}
+
+.footer-nav a {
+    color: #bbb;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.footer-nav a:hover {
+    color: #3B5998;
+}
+
+.footer-social {
+    margin-top: 10px;
+}
+
+.footer-social a img {
+    width: 20px;
+    margin: 0 8px;
+    filter: grayscale(100%);
+    transition: filter 0.3s;
+}
+
+.footer-social a img:hover {
+    filter: grayscale(0%);
+}
+/* estilo menu */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content" data-aos="fade-down" data-aos-delay="200">
+            <div class="logo-container">
+                <a href="index.html"><img src="images/nova_logo.png" alt="Logo Sp" class="logo"></a>
+            </div>
+            <div class="menu-container" data-aos="fade-down" data-aos-delay="300">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="sobrenos.html">Sobre Nós</a></li>
+                        <li><a href="servicos.html">Serviços</a></li>
+                        <li>
+                            <a href="#">Contato</a>
+                            <div class="submenu">
+                                <a href="mailto:seuemail@example.com">Email</a>
+                                <a href="https://wa.me/5511999999999" target="_blank">WhatsApp</a>
+                                <a href="https://www.instagram.com/seuusuario" target="_blank">Instagram</a>
+                                <a href="https://www.instagram.com/seuusuario" target="_blank">Linkedin</a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="text-container" data-aos="fade-up" data-aos-delay="500">
+                <h1>Sobre Nós</h1>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="about-container" data-aos="fade-up" data-aos-delay="500">
+            <p>
+                Fundada em 2008, a SP Construções e Reformas tem se destacado no mercado pela excelência em serviços de construção e reforma. Com mais de uma década de experiência, nossa equipe dedicada se compromete em entregar qualidade e inovação em cada projeto.
+            </p>
+            <p>
+                Nosso objetivo é transformar sonhos em realidade, proporcionando soluções personalizadas que atendam às necessidades de nossos clientes. Desde a concepção até a finalização, trabalhamos com transparência e profissionalismo, garantindo a satisfação total em cada etapa do processo.
+            </p>
+            <p>
+                Na SP Construções e Reformas, acreditamos que a base de um bom trabalho está na confiança e no relacionamento com nossos clientes. Estamos sempre prontos para ouvir e colaborar, buscando as melhores práticas e os materiais mais adequados para cada obra.
+            </p>
+            <p>
+                Seja qual for o seu projeto, grande ou pequeno, temos a experiência e a paixão necessárias para entregar resultados excepcionais.
+            </p>
+            <p>
+                <strong><a href="">Entre em contato</a> conosco para conversar sobre como podemos ajudá-lo a construir o seu futuro!</strong>
+            </p>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <nav class="footer-nav">
+                <a href="index.html">Home</a>
+                <a href="sobrenos.html">Sobre Nós</a>
+                <a href="servicos.html">Serviços</a>
+                <a href="contato.html">Contato</a>
+            </nav>
+            <div class="footer-social">
+                <a href="#"><img src="images/emai.svg" alt="Email"></a>
+                <a href="#"><img src="images/instagram.svg" alt="Instagram"></a>
+                <a href="#"><img src="images/linkedin copy.svg" alt="Linkedin"></a>
+                <a href="#"><img src="images/whatsapp.svg" alt="WhatsApp"></a>
+            </div>
+        </div>
+        <p>&copy; Todos os direitos reservados © 2024 | Desenvolvido por <strong>TaSh</strong></p>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, 
+            easing: 'ease-in-out', 
+            once: true 
+        });
+    </script>
+</body>
+</html>
+
+
