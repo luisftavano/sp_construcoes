@@ -223,11 +223,63 @@
         transform: scale(1);
     }
 }
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+    }
 
-    </style>
+    .menu-hamburguer {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .menu-hamburguer span {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: white;
+        margin: 5px 0;
+        transition: 0.3s;
+    }
+
+    .menu-container.expanded nav ul {
+        display: flex;
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        text-align: right;
+        padding: 20px 40px; /* Ajuste o valor para mover o texto mais para a direita */
+    }
+
+    header video {
+        height: 70vh;
+    }
+
+    .services-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+</style>
 </head>
 <body>
     <header>
+        <div class="menu-hamburguer" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <div class="header-content" data-aos="fade-down" data-aos-delay="200">
             <div class="logo-container">
                 <a href="index.html"><img src="images/nova_logo.png" alt="Logo Sp" class="logo"></a>
@@ -294,6 +346,9 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
     <script>
+        function toggleMenu() {
+            document.querySelector('.menu-container').classList.toggle('expanded');
+        }
         AOS.init({
             duration: 800, 
             easing: 'ease-in-out', 

@@ -294,7 +294,7 @@
     margin: 0 8px;
     filter: grayscale(100%);
     transition: filter 0.3s;
-}
+}q
 
 .footer-social a img:hover {
     filter: grayscale(0%);
@@ -309,12 +309,90 @@
             100% {
                 transform: scale(1);
             }
-        }
+}
+/* Responsividade para tablets e celulares */
+@media (max-width: 1024px) {
+    /* Ajuste para tablets */
+    .text-container h1 {
+        font-size: 2rem;
+    }
+    .text-container h3 {
+        font-size: 1rem;
+    }
+    .services-container {
+        flex-direction: column; 
+        align-items: center; 
+    }
+}
 
-    </style>
+@media (max-width: 768px) {
+    nav ul {
+            display: none;
+    }
+
+
+    .menu-hamburguer {
+            display: block;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            z-index: 2;
+    }
+
+    .menu-hamburguer span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: white;
+            margin: 5px 0;
+            transition: 0.3s;
+    }
+
+    .menu-container.expanded nav ul {
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            text-align: right;
+            padding: 20px 40px;
+    }
+
+    header video {
+            height: 70vh;
+    }
+    .services-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+    }
+
+    .service-box {
+            width: 80%;
+            margin: 10px 0;
+    }
+
+    .service-box img {
+            display: block;
+            margin: 0 auto;
+    }
+}
+
+
+
+</style>
 </head>
 <body>
     <header>
+        <div class="menu-hamburguer" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <div class="header-content" data-aos="fade-down" data-aos-delay="200">
             <div class="logo-container">
                 <a href="index.html"><img src="images/nova_logo.png" alt="Logo Sp" class="logo"></a>
@@ -388,9 +466,9 @@
                 <p>Nossa equipe especializada em reformas e renovações está pronta para transformar seus espaços, melhorando a funcionalidade e a estética de sua casa ou empresa. Realizamos projetos que atendem suas necessidades específicas, garantindo qualidade e eficiência em cada etapa do processo.
 
                     <li><strong>Reforma de Ambientes:</strong> Atualizamos e revitalizamos cômodos como salas, cozinhas e banheiros.</li>
-<li><strong>Ampliações:</strong> Adicionamos novos espaços à sua residência ou empresa, como quartos, varandas e áreas de lazer.</li>
-<li><strong>Melhorias Estruturais:</strong>Atuamos em modificações que aprimoram a estrutura e segurança do imóvel.</li>
-<li><strong>Personalização de Espaços:</strong> Trabalhamos em conjunto com os clientes para criar ambientes que reflitam seu estilo e funcionalidade.</li>
+                    <li><strong>Ampliações:</strong> Adicionamos novos espaços à sua residência ou empresa, como quartos, varandas e áreas de lazer.</li>
+                    <li><strong>Melhorias Estruturais:</strong>Atuamos em modificações que aprimoram a estrutura e segurança do imóvel.</li>
+                    <li><strong>Personalização de Espaços:</strong> Trabalhamos em conjunto com os clientes para criar ambientes que reflitam seu estilo e funcionalidade.</li>
                 </p>
             </div>
 
@@ -452,6 +530,9 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
     <script>
+        function toggleMenu() {
+            document.querySelector('.menu-container').classList.toggle('expanded');
+        }
         AOS.init({
             duration: 800, 
             easing: 'ease-in-out', 
@@ -459,7 +540,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.servico').forEach(servico => {
+        document.querySelectorAll('.servico').forEach(servico => {
         servico.addEventListener('click', function () {
             
             servico.style.display = 'none';

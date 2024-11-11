@@ -27,6 +27,12 @@
             <source src="images/video_header_edit.mp4" type="video/mp4">
             Seu navegador não suporta a tag de vídeo.
         </video>
+
+        <div class="menu-hamburguer" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         
         <div class="header-content">
             <div class="logo-container" data-aos="fade-down" data-aos-delay="200">
@@ -146,13 +152,19 @@
     <p>&copy; Todos os direitos reservados © 2024 | Desenvolvido por <strong>TaSh</strong></p>
 </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.1/aos.js"></script>
+
 <script>
+    function toggleMenu() {
+        document.querySelector('.menu-container').classList.toggle('expanded');
+    }
+    
     AOS.init({
         duration: 800, 
         easing: 'ease-in-out', 
         once: true 
     });
 </script>
+
 
 </body>
 </html>
