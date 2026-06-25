@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Paleta principal ─────────────────────────────── */
+  --color-bg:             #F5F3EE;   /* papel kraft claro */
+  --color-surface:        #FFFFFF;   /* cards e painéis */
+  --color-border:         #DDD9D0;   /* bordas finas */
+  --color-border-strong:  #C4BFB5;   /* foco / separador mais forte */
+  --color-ink:            #1E3A5F;   /* azul-tinta (accent principal) */
+  --color-ink-light:      #EEF2F7;   /* fundo sutil do campo Kango */
+  --color-text:           #1A1814;   /* texto principal */
+  --color-text-2:         #6B6560;   /* rótulos / metadados */
+  --color-text-3:         #9E9891;   /* info discreta / placeholders */
+
+  /* ── Status discretos ─────────────────────────────── */
+  --color-ok-bg:          #E9F3EC;
+  --color-ok-text:        #1A3D2B;
+  --color-warn-bg:        #F5EDDE;
+  --color-warn-text:      #5C3D10;
+  --color-late-bg:        #F5DEDE;
+  --color-late-text:      #5C1010;
+  --color-done-bg:        #EDEBE6;
+  --color-done-text:      #6B6560;
+
+  /* ── Aliases para compatibilidade com componentes antigos ── */
+  --color-navy:           #1E3A5F;
+  --color-navy-light:     #24457A;
+  --color-blue:           #1E3A5F;
+  --color-blue-hover:     #152E4D;
+  --color-blue-light:     #EEF2F7;
+  --color-blue-mid:       #3C6498;
+  --color-green:          #10B981;
+  --color-amber:          #F59E0B;
+  --color-offwhite:       #F5F3EE;
+  --color-slate-soft:     #6B6560;
+
+  /* ── Tipografia ───────────────────────────────────── */
+  --font-bricolage: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-sans:      'Inter', system-ui, sans-serif;
+  --font-mono:      'JetBrains Mono', ui-monospace, monospace;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #F5F3EE;
+  color: #1A1814;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100svh;
+}

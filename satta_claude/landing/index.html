@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SATTA — O CRM com a Kango, a IA que trabalha por você</title>
+  <meta name="description" content="SATTA é o CRM para pequenos negócios brasileiros com a Kango, a IA que responde seu WhatsApp, agenda horários e gera relatórios por você." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #F5F3EE;
+      --surface:   #FFFFFF;
+      --ink:       #1E3A5F;
+      --ink-hover: #152E4D;
+      --verde:     #1F4D3A;
+      --text:      #1A1814;
+      --text-2:    #6B6560;
+      --text-3:    #9E9891;
+      --border:    #DDD9D0;
+      --border-2:  #C4BFB5;
+      --ok-bg:     #E9F3EC;
+      --ok-text:   #1A3D2B;
+      --font-title: 'Bricolage Grotesque', system-ui, sans-serif;
+      --font-body:  'Inter', system-ui, sans-serif;
+      --font-mono:  'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── NAV ── */
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(245,243,238,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .wordmark { font-family: var(--font-title); font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.5px; }
+    .wordmark span { font-weight: 300; opacity: 0.55; font-size: 13px; margin-left: 6px; letter-spacing: 0; }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 14px; color: var(--text-2); font-weight: 500; transition: color .2s; position: relative; padding-bottom: 3px; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 0; height: 1.5px; background: var(--ink); border-radius: 2px; transition: width .22s ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+
+    /* ── BOTÕES ── */
+    .btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 11px 22px; border-radius: 8px; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .15s, box-shadow .2s; border: 1.5px solid transparent; line-height: 1; }
+    .btn-primary { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: 0 2px 10px rgba(30,58,95,.3); }
+    .btn-primary:hover { background: var(--ink-hover); border-color: var(--ink-hover); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,58,95,.38); }
+    .btn-outline { background: transparent; color: var(--text-2); border-color: var(--border-2); }
+    .btn-outline:hover { border-color: var(--ink); color: var(--ink); background: rgba(30,58,95,.04); }
+    .btn-entrar { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; transition: background .2s; }
+    .btn-entrar:hover { background: rgba(30,58,95,.08); }
+    .btn-verde { background: var(--verde); color: #fff; border-color: var(--verde); box-shadow: 0 2px 10px rgba(31,77,58,.3); }
+    .btn-verde:hover { background: #163a2b; border-color: #163a2b; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(31,77,58,.38); }
+    .btn-sm { padding: 8px 16px; font-size: 13px; }
+    .btn-lg { padding: 14px 32px; font-size: 15px; }
+
+    /* CTA com subtext */
+    .cta-group { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+    .cta-sub { font-size: 11.5px; color: var(--text-3); margin-top: 6px; }
+
+    /* ── HERO ── */
+    .hero { padding: 88px 0 80px; background-image: radial-gradient(ellipse 70% 80% at 75% 40%, rgba(30,58,95,.07) 0%, transparent 65%); }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-label { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--ink); background: linear-gradient(135deg, #E8EFF8 0%, #EEF2F7 100%); border: 1px solid #C6D5E8; border-radius: 20px; padding: 5px 14px 5px 10px; margin-bottom: 20px; }
+    .hero-label::before { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ink); opacity: .7; }
+    .hero h1 { font-family: var(--font-title); font-size: clamp(32px, 4vw, 48px); font-weight: 700; line-height: 1.15; letter-spacing: -1px; color: var(--text); margin-bottom: 20px; }
+    .hero h1 em { font-style: normal; color: var(--ink); }
+    .hero-sub { font-size: 17px; color: var(--text-2); line-height: 1.65; margin-bottom: 36px; max-width: 480px; }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+    .hero-trial-note { font-size: 13px; color: var(--text-3); margin-top: 14px; }
+
+    /* Kango hero */
+    .kango-hero-visual { display: flex; flex-direction: column; align-items: center; gap: 0; }
+    .kango-hero-img { max-height: 320px; width: 100%; max-width: 320px; object-fit: contain; mix-blend-mode: multiply; margin-top: -8px; }
+    .kango-bubble { align-self: flex-end; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; border-bottom-right-radius: 4px; padding: 14px 18px; font-size: 13.5px; line-height: 1.6; color: var(--text); box-shadow: 0 4px 24px rgba(30,58,95,.12); max-width: 260px; margin-bottom: 10px; }
+    .kango-bubble strong { color: var(--ink); }
+    .kango-bubble-sig { display: block; font-size: 11px; color: var(--text-3); margin-top: 8px; }
+
+    /* ── SEÇÃO GENÉRICA ── */
+    section { padding: 80px 0; }
+    .section-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); margin-bottom: 10px; }
+    .section-title { font-family: var(--font-title); font-size: clamp(26px, 3vw, 38px); font-weight: 700; letter-spacing: -.5px; line-height: 1.2; color: var(--text); margin-bottom: 14px; }
+    .section-sub { font-size: 16px; color: var(--text-2); max-width: 560px; line-height: 1.65; }
+    .section-head { margin-bottom: 52px; }
+
+    /* ── DOR ── */
+    .dor { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .dores-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-top: 48px; }
+    .dor-item { background: var(--surface); padding: 28px 24px; }
+    .dor-icon { width: 36px; height: 36px; border: 1.5px solid var(--border-2); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .dor-item h3 { font-family: var(--font-title); font-size: 15px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+    .dor-item p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+    /* ── SOLUÇÃO ── */
+    .solucao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .solucao-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .solucao-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(30,58,95,.1); border-color: #C0CDD9; }
+    .solucao-card.destaque { border-color: var(--ink); border-top: 3px solid var(--ink); grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .solucao-card.destaque:hover { border-color: var(--ink); }
+    .solucao-num { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .05em; color: var(--ink); background: rgba(30,58,95,.08); border: 1px solid rgba(30,58,95,.15); border-radius: 4px; padding: 3px 8px; display: inline-block; margin-bottom: 18px; }
+    .solucao-card h3 { font-family: var(--font-title); font-size: 20px; font-weight: 700; margin-bottom: 10px; letter-spacing: -.3px; }
+    .solucao-card p { font-size: 14.5px; color: var(--text-2); line-height: 1.65; }
+    .mini-chat { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .mini-msg { padding: 8px 12px; border-radius: 8px; font-size: 13px; line-height: 1.4; max-width: 90%; }
+    .mini-msg.u { background: var(--ink); color: #fff; align-self: flex-end; }
+    .mini-msg.k { background: var(--surface); border: 1px solid var(--border); align-self: flex-start; }
+    .mini-kango-row { display: flex; align-items: flex-end; gap: 8px; align-self: flex-start; max-width: 90%; }
+    .mini-kango-row .mini-msg.k { max-width: 100%; align-self: unset; }
+    .mini-kango-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 1px solid var(--border); }
+
+    /* ── DIFERENCIAIS ── */
+    .dif { background: var(--ink); }
+    .dif .section-label { color: rgba(255,255,255,.45); }
+    .dif .section-title { color: #fff; }
+    .dif .section-sub { color: rgba(255,255,255,.65); }
+    .dif-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .dif-card { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 28px 22px; transition: transform .22s ease, background .22s, border-color .22s; }
+    .dif-card:hover { transform: translateY(-4px); background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.22); }
+    .dif-card h3 { font-family: var(--font-title); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 10px; }
+    .dif-card p { font-size: 13.5px; color: rgba(255,255,255,.6); line-height: 1.6; }
+    .dif-icon { width: 32px; height: 32px; margin-bottom: 16px; opacity: .7; }
+
+    /* ── NICHOS ── */
+    .nichos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .nicho-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid transparent; border-radius: 12px; padding: 24px 22px; transition: transform .22s ease, box-shadow .22s ease, border-left-color .22s ease; }
+    .nicho-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(30,58,95,.09); border-left-color: var(--ink); }
+    .nicho-card h3 { font-family: var(--font-title); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .nicho-card p { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+
+    /* ── INTEGRAÇÕES ── */
+    .integracoes { background: var(--bg); }
+    .integracoes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 12px; }
+    .integ-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 22px; transition: transform .2s ease, box-shadow .2s ease; display: flex; flex-direction: column; }
+    .integ-card:not(.em-breve):hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(30,58,95,.09); }
+    .integ-card.em-breve { opacity: 0.65; }
+    .integ-logo { width: 44px; height: 44px; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-bottom: 14px; }
+    .integ-card h3 { font-family: var(--font-title); font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .integ-card p { font-size: 13px; color: var(--text-2); line-height: 1.55; margin-bottom: 16px; flex: 1; }
+    .integ-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-block; cursor: default; }
+    .integ-badge-plano { background: rgba(30,58,95,.07); color: var(--ink); border: 1px solid rgba(30,58,95,.14); cursor: pointer; transition: background .15s; }
+    .integ-badge-plano:hover { background: rgba(30,58,95,.13); }
+    .integ-badge-todos { background: var(--ok-bg); color: var(--ok-text); border: 1px solid #A8D5B5; }
+    .integ-badge-soon { background: #FFF8E6; color: #92620A; border: 1px solid #F0D890; }
+    .integracoes-footer { text-align: center; margin-top: 32px; }
+    .integracoes-footer p { font-size: 13.5px; color: var(--text-2); margin-bottom: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .integracoes-footer a { font-size: 13px; color: var(--ink); font-weight: 500; border-bottom: 1px solid rgba(30,58,95,.3); transition: border-color .15s; }
+    .integracoes-footer a:hover { border-color: var(--ink); }
+
+    /* ── PREÇOS ── */
+    .precos { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .precos-intro { display: block; text-align: center; font-size: 14px; color: var(--ink); font-weight: 500; margin-bottom: 40px; padding: 10px 24px; background: rgba(30,58,95,.06); border: 1px solid rgba(30,58,95,.12); border-radius: 8px; }
+    .planos-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; }
+    .planos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; min-width: 780px; padding-top: 18px; }
+    .plano { border: 1.5px solid var(--border); border-radius: 14px; padding: 32px 28px; background: var(--surface); display: flex; flex-direction: column; position: relative; }
+    .plano.popular { border-color: var(--ink); box-shadow: 0 2px 20px rgba(30,58,95,.12); }
+    .plano-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+    .badge-popular { background: var(--ink); color: #fff; }
+    .badge-custo { background: var(--verde); color: #fff; }
+    .plano-nome { font-family: var(--font-title); font-size: 21px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .plano-desc { font-size: 13px; color: var(--text-2); margin-bottom: 24px; line-height: 1.5; }
+    .plano-preco { margin-bottom: 24px; }
+    .plano-valor-row { display: flex; align-items: baseline; gap: 4px; }
+    .plano-valor { font-family: var(--font-mono); font-size: 38px; font-weight: 500; color: var(--text); letter-spacing: -.5px; }
+    .plano-mes { font-size: 14px; color: var(--text-2); }
+    .plano-anual-hint { font-size: 12px; color: var(--text-3); margin-top: 4px; }
+    .plano-placeholder { font-family: var(--font-mono); font-size: 28px; font-weight: 400; color: var(--text-3); letter-spacing: -.5px; margin-bottom: 4px; }
+    .plano-placeholder-note { font-size: 12px; color: var(--text-3); }
+    .plano-usuarios { font-size: 12px; color: var(--text-3); margin-bottom: 16px; font-weight: 500; }
+    .plano-recursos { list-style: none; margin-bottom: 28px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .plano-recursos li { font-size: 13.5px; color: var(--text); display: flex; align-items: flex-start; gap: 10px; line-height: 1.45; }
+    .plano-recursos li::before { content: ''; width: 16px; height: 16px; border-radius: 50%; background: var(--ok-bg); border: 1.5px solid #A8D5B5; flex-shrink: 0; margin-top: 1px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 8l3 3 5-5' stroke='%231A3D2B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
+    .plano-recursos li.kango-li::before { background-color: transparent; border: none; background-image: url('kango-avatar.png'); background-size: cover; background-position: center; }
+    .plano-recursos li.destaque-item { font-weight: 500; }
+    .plano-cta-wrap { margin-top: auto; }
+    .plano-cta-sub { font-size: 11px; color: var(--text-3); text-align: center; margin-top: 8px; }
+
+    /* Analista highlight in Plus plan */
+    .plano-analista { background: rgba(30,58,95,.05); border: 1px solid rgba(30,58,95,.12); border-radius: 8px; padding: 12px 13px; display: flex; gap: 10px; align-items: flex-start; }
+    .plano-analista svg { flex-shrink: 0; margin-top: 1px; }
+    .plano-analista p { font-size: 13px; color: var(--text); line-height: 1.45; font-weight: 500; }
+    .plano-analista p span { display: block; font-size: 12px; color: var(--text-2); font-weight: 400; margin-top: 2px; }
+
+    /* Garantias */
+    .garantias { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .garantia-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-2); }
+    .garantia-icon { color: var(--ok-text); flex-shrink: 0; }
+
+    /* Analista explanation box */
+    .analista-box { margin-top: 48px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 28px 32px; max-width: 700px; margin-left: auto; margin-right: auto; display: flex; gap: 20px; align-items: flex-start; }
+    .analista-box-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(30,58,95,.08); border: 1px solid rgba(30,58,95,.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .analista-box-text h3 { font-family: var(--font-title); font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .analista-box-text p { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+    /* ── BILLING TOGGLE ── */
+    .billing-toggle-wrap { display: flex; justify-content: center; margin-bottom: 36px; }
+    .billing-toggle { display: inline-flex; gap: 4px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }
+    .billing-btn { font-family: var(--font-body); font-size: 14px; font-weight: 600; padding: 9px 18px; border-radius: 8px; border: none; background: transparent; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 7px; transition: background .15s, color .15s; }
+    .billing-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    .billing-badge { font-size: 11px; font-weight: 700; color: var(--verde); background: var(--ok-bg); padding: 2px 7px; border-radius: 4px; }
+
+    /* Pulse highlight on plan card */
+    @keyframes planPulse {
+      0%   { box-shadow: 0 2px 20px rgba(30,58,95,.12), 0 0 0 0 rgba(30,58,95,.4); }
+      50%  { box-shadow: 0 2px 20px rgba(30,58,95,.12), 0 0 0 6px rgba(30,58,95,.15); }
+      100% { box-shadow: 0 2px 20px rgba(30,58,95,.12), 0 0 0 0 rgba(30,58,95,0); }
+    }
+    .plano.pulsar { animation: planPulse 1.4s ease; }
+
+    /* ── FAQ ── */
+    .faq-list { max-width: 700px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    details { border-bottom: 1px solid var(--border); }
+    details:last-child { border-bottom: none; }
+    summary { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; font-size: 15px; font-weight: 500; color: var(--text); cursor: pointer; list-style: none; background: var(--surface); user-select: none; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: '+'; font-size: 20px; color: var(--text-3); font-weight: 300; transition: transform .2s; flex-shrink: 0; }
+    details[open] summary::after { content: '×'; }
+    details[open] summary { color: var(--ink); }
+    .faq-resposta { padding: 0 24px 20px; font-size: 14px; color: var(--text-2); line-height: 1.7; background: var(--surface); }
+
+    /* ── CTA FINAL ── */
+    .cta-final { overflow: hidden; }
+    .cta-split { display: grid; grid-template-columns: 38% 62%; min-height: 420px; }
+    .cta-split-img { background: #F5F2EB; display: flex; align-items: flex-end; justify-content: center; padding: 48px 40px 0; overflow: hidden; }
+    .cta-split-img img { width: 300px; max-width: 100%; object-fit: contain; mix-blend-mode: multiply; display: block; }
+    .cta-split-text { background: var(--ink); padding: 80px 72px; display: flex; flex-direction: column; justify-content: center; }
+    .cta-split-text h2 { font-family: var(--font-title); font-size: clamp(26px, 3vw, 40px); font-weight: 700; color: #fff; letter-spacing: -.5px; line-height: 1.2; margin-bottom: 14px; max-width: 520px; }
+    .cta-split-text p { font-size: 16px; color: rgba(255,255,255,.65); margin-bottom: 32px; line-height: 1.6; }
+    .cta-split-text .btn-cta-final { background: #fff; color: var(--ink); border: none; font-size: 15px; padding: 14px 32px; align-self: flex-start; box-shadow: 0 4px 20px rgba(0,0,0,.25); border-radius: 8px; font-weight: 600; font-family: var(--font-body); cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; display: inline-block; }
+    .cta-split-text .btn-cta-final:hover { background: rgba(255,255,255,.92); transform: translateY(-1px); box-shadow: 0 8px 28px rgba(0,0,0,.35); }
+    .cta-final-sub { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 10px; }
+
+    /* ── RODAPÉ ── */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 40px 0; }
+    .footer-inner { display: grid; grid-template-columns: 240px 1fr 1fr 1fr; gap: 40px 48px; align-items: start; }
+    .footer-brand { text-align: left; }
+    .footer-brand p { font-size: 13px; color: var(--text-2); margin-top: 8px; max-width: 220px; line-height: 1.55; }
+    .footer-col h4 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--text-3); margin-bottom: 12px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col li a { font-size: 13px; color: var(--text-2); transition: color .15s; }
+    .footer-col li a:hover { color: var(--text); }
+    .footer-bottom { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer-bottom p { font-size: 12px; color: var(--text-3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1000px) {
+      .integracoes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .dores-grid { grid-template-columns: 1fr 1fr; }
+      .dif-grid { grid-template-columns: 1fr 1fr; }
+      .solucao-card.destaque { grid-column: span 1; grid-template-columns: 1fr; gap: 24px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: span 2; }
+      .footer-col:last-child { grid-column: span 2; }
+      .garantias { gap: 16px; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .btn-entrar { display: none; }
+      .dores-grid { grid-template-columns: 1fr; }
+      .solucao-grid { grid-template-columns: 1fr; }
+      .dif-grid { grid-template-columns: 1fr; }
+      .nichos-grid { grid-template-columns: 1fr 1fr; }
+      .integracoes-grid { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-brand { grid-column: span 1; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      section { padding: 56px 0; }
+      .kango-bubble { max-width: 200px; font-size: 13px; padding: 12px 14px; }
+      .kango-hero-img { max-height: 240px; max-width: 240px; }
+      .cta-split { grid-template-columns: 1fr; }
+      .cta-split-img { min-height: 260px; padding: 32px 40px 0; }
+      .cta-split-img img { width: 200px; }
+      .cta-split-text { padding: 48px 32px; align-items: center; text-align: center; }
+      .cta-split-text h2 { max-width: 100%; }
+      .cta-split-text .btn-cta-final { align-self: center; }
+      .garantias { flex-direction: column; align-items: flex-start; }
+      .analista-box { flex-direction: column; padding: 24px; }
+    }
+
+  /* ── Modals ────────────────────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.5);
+    z-index: 2000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--surface); border-radius: 16px; width: 100%;
+    max-width: 480px; margin: 16px; position: relative;
+    max-height: calc(100dvh - 40px); overflow-y: auto;
+    transform: scale(.96); transition: transform .2s ease;
+    box-shadow: 0 8px 48px rgba(0,0,0,.18);
+  }
+  .modal-overlay.open .modal-box { transform: scale(1); }
+  .modal-inner { padding: 36px 36px 28px; }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; width: 32px; height: 32px;
+    border-radius: 50%; border: none; background: transparent; cursor: pointer;
+    color: var(--text-3); display: flex; align-items: center; justify-content: center;
+    transition: background .15s, color .15s; z-index: 1;
+  }
+  .modal-close:hover { background: var(--bg); color: var(--text); }
+  .modal-wordmark { font-family: var(--font-title); font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -.4px; display: block; margin-bottom: 28px; }
+  .modal-wordmark span { font-size: 10px; opacity: .4; margin-left: 3px; }
+  .modal-title { font-family: var(--font-title); font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -.4px; margin-bottom: 6px; }
+  .modal-sub { font-size: 13.5px; color: var(--text-2); margin-bottom: 28px; }
+  .modal-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 28px; }
+  .modal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all .2s; }
+  .modal-dot.active { width: 20px; border-radius: 3px; background: var(--ink); }
+  .modal-dot.done { background: var(--ink); }
+  .modal-step { display: none; }
+  .modal-step.visible { display: block; }
+  .modal-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--text-2); margin-bottom: 6px; }
+  .modal-input {
+    width: 100%; border: 1.5px solid var(--border); background: var(--bg);
+    border-radius: 8px; padding: 10px 14px; font-size: 14px; color: var(--text);
+    outline: none; transition: border-color .15s; font-family: var(--font-body);
+    box-sizing: border-box;
+  }
+  .modal-input:focus { border-color: var(--ink); }
+  .modal-input::placeholder { color: var(--text-3); }
+  .modal-field { margin-bottom: 16px; }
+  .modal-input-wrap { position: relative; }
+  .modal-input-wrap .modal-input { padding-right: 42px; }
+  .modal-eye {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--text-3); padding: 4px;
+    display: flex; align-items: center;
+  }
+  .modal-eye:hover { color: var(--text); }
+  .modal-btn {
+    width: 100%; padding: 11px 16px; border-radius: 8px; font-size: 14px;
+    font-weight: 600; cursor: pointer; transition: background .15s, opacity .15s, border-color .15s;
+    font-family: var(--font-body); border: none; display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .modal-btn-primary { background: var(--ink); color: #fff; }
+  .modal-btn-primary:hover:not(:disabled) { background: #2a4f7a; }
+  .modal-btn-primary:disabled { opacity: .5; cursor: default; }
+  .modal-btn-ghost { background: var(--surface); color: var(--text); border: 1.5px solid var(--border) !important; }
+  .modal-btn-ghost:hover { border-color: var(--text-2) !important; }
+  .modal-btn-back { background: var(--surface); color: var(--text-2); border: 1.5px solid var(--border) !important; }
+  .modal-btn-back:hover { border-color: var(--text-2) !important; color: var(--text); }
+  .modal-row { display: flex; gap: 8px; }
+  .modal-row .modal-btn { flex: 1; }
+  .modal-divider { display: flex; align-items: center; gap: 12px; margin: 16px 0; color: var(--text-3); font-size: 12px; }
+  .modal-divider::before, .modal-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .modal-footer-note { font-size: 11.5px; color: var(--text-3); text-align: center; line-height: 1.65; margin-top: 20px; }
+  .modal-footer-note a { color: var(--text-2); text-decoration: underline; }
+  .modal-err { font-size: 13px; color: #5C1010; background: #fdf4f4; border: 1px solid #f5c6c6; border-radius: 6px; padding: 9px 12px; margin-bottom: 14px; display: none; }
+  .modal-segs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .modal-seg {
+    display: flex; align-items: center; gap: 9px; padding: 10px 12px;
+    border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer;
+    font-size: 13.5px; color: var(--text); background: var(--surface);
+    transition: border-color .15s, background .15s; text-align: left;
+    font-family: var(--font-body); width: 100%;
+  }
+  .modal-seg:hover { border-color: var(--ink); }
+  .modal-seg.sel { border-color: var(--ink); background: rgba(30,58,95,.05); }
+  .modal-seg-icon { font-size: 17px; flex-shrink: 0; line-height: 1; }
+  .modal-loading { text-align: center; padding: 28px 0 12px; }
+  .modal-loading img { width: 76px; height: 76px; object-fit: contain; margin: 0 auto 16px; display: block; }
+  .modal-loading p { font-size: 14px; color: var(--text-2); }
+  .modal-confirm-box { text-align: center; padding: 20px 0 8px; }
+  .modal-confirm-box p { font-size: 15px; color: var(--text); margin-bottom: 24px; font-weight: 500; line-height: 1.5; }
+  .pwd-bars { display: flex; gap: 3px; margin-top: 8px; margin-bottom: 3px; }
+  .pwd-bar { height: 3px; flex: 1; border-radius: 2px; background: var(--border); transition: background .2s; }
+  .pwd-label { font-size: 11px; color: var(--text-3); }
+  .ml-forgot { text-align: right; margin-top: -8px; margin-bottom: 20px; }
+  .ml-forgot a { font-size: 12.5px; color: var(--text-2); }
+  @media (max-width: 500px) {
+    .modal-inner { padding: 28px 20px 20px; }
+    .modal-segs { grid-template-columns: 1fr; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container nav-inner">
+    <a href="/" class="wordmark">SATTA<span>CRM</span></a>
+    <ul class="nav-links">
+      <li><a href="#solucao">Como funciona</a></li>
+      <li><a href="#nichos">Para quem é</a></li>
+      <li><a href="#integracoes">Integrações</a></li>
+      <li><a href="#precos">Preços</a></li>
+      <li><a href="#faq">Dúvidas</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="https://satta-crm-production.up.railway.app/login" class="btn-entrar" aria-label="Entrar na sua conta">Entrar</a>
+      <a href="https://satta-crm-production.up.railway.app/criar-conta" class="btn btn-primary btn-sm" aria-label="Começar teste grátis de 14 dias">Teste Grátis</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <span class="hero-label">SATTA CRM</span>
+        <h1>O sistema que organiza sua <em>agenda</em>, seus clientes e seu caixa — num só lugar</h1>
+        <p class="hero-sub">Com a Kango, a IA da SATTA: você só pergunta ou pede, e ela agenda, responde o WhatsApp e calcula seu faturamento por você.</p>
+        <div class="hero-ctas">
+          <div class="cta-group">
+            <a href="https://satta-crm-production.up.railway.app/criar-conta" class="btn btn-primary" aria-label="Começar teste grátis de 14 dias">Teste Grátis</a>
+          </div>
+          <a href="#solucao" class="btn btn-outline">Ver a Kango em ação</a>
+        </div>
+        <p class="hero-trial-note">14 dias grátis. Sem cartão de crédito.</p>
+      </div>
+      <div class="kango-hero-visual">
+        <div class="kango-bubble" aria-hidden="true">
+          Eu encontrei <strong>R$ 4.320</strong> faturados essa semana &mdash; 18% acima da semana passada.
+          <span class="kango-bubble-sig">— Kango</span>
+        </div>
+        <img src="kango-thinking.png" alt="Kango, a IA da SATTA Analytics" class="kango-hero-img" width="320" height="320" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOR -->
+<section class="dor">
+  <div class="container">
+    <p class="section-label">O problema</p>
+    <h2 class="section-title">Você vive alguma dessas situações?</h2>
+    <div class="dores-grid">
+      <div class="dor-item">
+        <div class="dor-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6560" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Caderno de papel e planilha solta</h3>
+        <p>Agenda rasurada, cliente errado no horário e dados que somem quando você mais precisa.</p>
+      </div>
+      <div class="dor-item">
+        <div class="dor-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6560" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>WhatsApp tomando seu tempo</h3>
+        <p>Mensagens sem resposta, cliente perguntando horário enquanto você está atendendo.</p>
+      </div>
+      <div class="dor-item">
+        <div class="dor-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6560" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Cliente que some e não volta</h3>
+        <p>Você não tem como saber quem está há meses sem aparecer — e acaba perdendo sem perceber.</p>
+      </div>
+      <div class="dor-item">
+        <div class="dor-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6560" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <h3>Não sabe quanto sobrou no mês</h3>
+        <p>Sem clareza do financeiro, fica difícil saber se o negócio está crescendo ou só rodando.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO -->
+<section id="solucao">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-label">A solução</p>
+      <h2 class="section-title">Agenda, clientes e caixa organizados —<br>a Kango cuida do resto.</h2>
+      <p class="section-sub">A Kango não é um bot de fluxo engessado. Ela entende o que você escreve e age: agenda, responde, calcula e avisa.</p>
+    </div>
+    <div class="solucao-grid">
+      <div class="solucao-card destaque">
+        <div>
+          <p class="solucao-num">01</p>
+          <h3>Pergunte qualquer coisa</h3>
+          <p>Faturamento do mês, ticket médio, clientes ativos, horários disponíveis. A Kango responde na hora com linguagem natural — sem precisar abrir relatório nenhum.</p>
+        </div>
+        <div class="mini-chat" aria-label="Exemplo de pergunta à Kango">
+          <div class="mini-msg u">Quais serviços venderam mais essa semana?</div>
+          <div class="mini-kango-row">
+            <img src="kango-avatar.png" alt="Kango" class="mini-kango-avatar" aria-hidden="true">
+            <div class="mini-msg k">Eu encontrei 3 destaques: corte (14x), barba (9x) e combo (6x). Juntos representam 83% do faturamento da semana.</div>
+          </div>
+        </div>
+      </div>
+      <div class="solucao-card">
+        <p class="solucao-num">02</p>
+        <h3>Responde o WhatsApp e agenda sozinha</h3>
+        <p>Seu cliente manda mensagem, a Kango verifica disponibilidade e confirma o horário — tudo sem você precisar parar o que está fazendo.</p>
+        <div class="mini-chat" aria-label="Exemplo de agendamento pela Kango" style="margin-top:20px">
+          <div class="mini-msg u">Agenda a Maria amanhã às 10h</div>
+          <div class="mini-kango-row">
+            <img src="kango-avatar.png" alt="Kango" class="mini-kango-avatar" aria-hidden="true">
+            <div class="mini-msg k">Feito. Maria confirmada amanhã às 10h. Ela vai receber a confirmação pelo WhatsApp agora.</div>
+          </div>
+        </div>
+      </div>
+      <div class="solucao-card">
+        <p class="solucao-num">03</p>
+        <h3>Reativa clientes que sumiram</h3>
+        <p>A Kango identifica quem está há mais de 30, 60 ou 90 dias sem aparecer e envia uma mensagem personalizada no WhatsApp para trazer de volta.</p>
+        <div class="mini-chat" aria-label="Exemplo de reativação pela Kango" style="margin-top:20px">
+          <div class="mini-msg u">Quem não volta há mais de 60 dias?</div>
+          <div class="mini-kango-row">
+            <img src="kango-avatar.png" alt="Kango" class="mini-kango-avatar" aria-hidden="true">
+            <div class="mini-msg k">Eu encontrei 8 clientes. Quer que eu envie uma mensagem de retorno para todos?</div>
+          </div>
+        </div>
+      </div>
+      <div class="solucao-card destaque">
+        <div>
+          <p class="solucao-num">04</p>
+          <h3>Relatórios na hora que você pede</h3>
+          <p>Peça um resumo do mês, compare com o anterior ou veja quais dias rendem mais. A Kango organiza e apresenta sem você precisar montar nada.</p>
+        </div>
+        <div class="mini-chat" aria-label="Exemplo de relatório pela Kango">
+          <div class="mini-msg u">Como foi o mês comparado ao anterior?</div>
+          <div class="mini-kango-row">
+            <img src="kango-avatar.png" alt="Kango" class="mini-kango-avatar" aria-hidden="true">
+            <div class="mini-msg k">Receita subiu 14%. Maio: R$ 8.420 — Junho: R$ 9.600. Melhor dia: sexta-feira.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section class="dif">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-label">Por que a SATTA</p>
+      <h2 class="section-title" style="color:#fff">IA de verdade, preço de PME</h2>
+      <p class="section-sub">Feito para quem não tem tempo a perder nem dinheiro a desperdiçar.</p>
+    </div>
+    <div class="dif-grid">
+      <div class="dif-card">
+        <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <h3>IA que conversa e age</h3>
+        <p>A Kango não segue fluxos fixos. Ela entende o contexto, interpreta o que você quer e executa — agenda, envia mensagem, gera relatório.</p>
+      </div>
+      <div class="dif-card">
+        <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <h3>Preço acessível para PME</h3>
+        <p>Planos a partir de R$ 89,90/mês, com tudo que um pequeno negócio precisa para organizar clientes, agenda e caixa.</p>
+      </div>
+      <div class="dif-card">
+        <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <h3>Multi-nicho brasileiro</h3>
+        <p>Funciona para barbearia, petshop, clínica, salão, lava-rápido, pousada e mais. Não é solução genérica — foi pensado para o negócio local.</p>
+      </div>
+      <div class="dif-card">
+        <svg class="dif-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <h3>Feito pela SATTA Analytics</h3>
+        <p>Empresa brasileira especializada em dados e IA. A SATTA é desenvolvida e mantida por quem entende de negócios reais e inteligência de dados.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NICHOS -->
+<section id="nichos">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-label">Para quem é</p>
+      <h2 class="section-title">Funciona para o seu tipo de negócio</h2>
+      <p class="section-sub">A SATTA foi desenvolvida para pequenos e médios negócios que atendem pessoas — com ou sem agendamento.</p>
+    </div>
+    <div class="nichos-grid">
+      <div class="nicho-card">
+        <h3>Barbearia e salão</h3>
+        <p>A Kango agenda o corte, lembra o cliente no dia e reativa quem está há meses sem aparecer.</p>
+      </div>
+      <div class="nicho-card">
+        <h3>Clínica e consultório</h3>
+        <p>A Kango confirma consultas, reduz faltas e avisa o paciente quando o retorno está próximo.</p>
+      </div>
+      <div class="nicho-card">
+        <h3>Pet shop</h3>
+        <p>A Kango lembra a tosa, o banho e o retorno — e envia mensagem no WhatsApp do tutor.</p>
+      </div>
+      <div class="nicho-card">
+        <h3>Lava-rápido</h3>
+        <p>Controle de entrada e saída de veículos, histórico do cliente e agendamento pelo WhatsApp.</p>
+      </div>
+      <div class="nicho-card">
+        <h3>Pousada e hospedagem</h3>
+        <p>A Kango responde sobre disponibilidade, registra reservas e envia confirmação automática.</p>
+      </div>
+      <div class="nicho-card">
+        <h3>Restaurante e lanchonete</h3>
+        <p>Histórico de pedidos, integração com iFood e controle de caixa centralizado na SATTA.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRAÇÕES -->
+<section id="integracoes" class="integracoes">
+  <div class="container">
+    <div class="section-head" style="text-align:center">
+      <p class="section-label">Integrações</p>
+      <h2 class="section-title" style="margin:0 auto 14px">Conecta com o que você já usa</h2>
+      <p class="section-sub" style="margin:0 auto">A SATTA se integra com as ferramentas do dia a dia do seu negócio — sem complicação, sem precisar de técnico.</p>
+    </div>
+
+    <div class="integracoes-grid">
+
+      <!-- WhatsApp -->
+      <div class="integ-card">
+        <div class="integ-logo" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect width="44" height="44" rx="10" fill="#25D366"/>
+            <path d="M22 9C14.82 9 9 14.82 9 22c0 2.28.62 4.42 1.7 6.26L9 35l7-1.66A12.93 12.93 0 0022 35c7.18 0 13-5.82 13-13S29.18 9 22 9zm7.16 17.74c-.3.85-1.77 1.63-2.42 1.7-.65.08-1.25.3-4.2-.87-3.52-1.4-5.8-5.02-5.98-5.25-.17-.23-1.43-1.9-1.43-3.63 0-1.72.9-2.57 1.33-2.82.3-.16.63-.24.97-.24h.68c.26 0 .54.01.8.59.3.68 1 2.47 1.09 2.65.09.17.15.38.03.6-.11.23-.17.36-.34.56-.17.2-.35.44-.5.6-.17.16-.34.34-.15.66.2.32.88 1.47 1.9 2.37 1.31 1.17 2.42 1.54 2.76 1.71.34.17.54.14.74-.09.2-.23.84-.97 1.07-1.3.22-.34.45-.28.75-.17.3.1 1.92.9 2.25 1.07.33.17.55.25.63.39.08.14.08.77-.22 1.47z" fill="white"/>
+          </svg>
+        </div>
+        <h3>WhatsApp Business</h3>
+        <p>A Kango responde seus clientes, confirma agendamentos e envia lembretes automáticos direto pelo WhatsApp do seu negócio.</p>
+        <button class="integ-badge integ-badge-plano" data-plan="profissional" aria-label="Disponível nos planos Profissional e Plus — clique para ver">Planos Profissional e Plus</button>
+      </div>
+
+      <!-- Google Calendar -->
+      <div class="integ-card">
+        <div class="integ-logo" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect width="44" height="44" rx="10" fill="white"/>
+            <rect x="8" y="8" width="28" height="28" rx="3" fill="white" stroke="#E5E7EB" stroke-width="1.5"/>
+            <rect x="8" y="8" width="28" height="10" rx="3" fill="#4285F4"/>
+            <rect x="8" y="15" width="28" height="3" fill="#4285F4"/>
+            <line x1="22" y1="18" x2="22" y2="36" stroke="#E5E7EB" stroke-width="1"/>
+            <line x1="8" y1="27" x2="36" y2="27" stroke="#E5E7EB" stroke-width="1"/>
+            <circle cx="14" cy="11" r="2" fill="white"/>
+            <circle cx="30" cy="11" r="2" fill="white"/>
+            <rect x="10" y="20" width="9" height="5" rx="1" fill="#34A853" opacity=".8"/>
+            <rect x="25" y="29" width="9" height="5" rx="1" fill="#EA4335" opacity=".8"/>
+          </svg>
+        </div>
+        <h3>Google Agenda</h3>
+        <p>Seus agendamentos aparecem automaticamente no Google Agenda do seu celular — sem precisar lançar duas vezes.</p>
+        <button class="integ-badge integ-badge-plano" data-plan="profissional" aria-label="Disponível nos planos Profissional e Plus — clique para ver">Planos Profissional e Plus</button>
+      </div>
+
+      <!-- Asaas -->
+      <div class="integ-card">
+        <div class="integ-logo" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect width="44" height="44" rx="10" fill="#1255ED"/>
+            <path d="M22 11l-9 22h5l2-5h4l2 5h5L22 11zm0 8l2 5h-4l2-5z" fill="white"/>
+          </svg>
+        </div>
+        <h3>Asaas</h3>
+        <p>Emita cobranças, boletos e Pix para seus clientes direto do sistema, sem precisar de outro app.</p>
+        <span class="integ-badge integ-badge-todos">Todos os planos</span>
+      </div>
+
+      <!-- Open Finance -->
+      <div class="integ-card">
+        <div class="integ-logo" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+            <rect width="44" height="44" rx="10" fill="#EEF2F7"/>
+            <path d="M12 32h20M12 22h20M22 12l10 6H12l10-6zM14 22v10M20 22v10M24 22v10M30 22v10" stroke="#1E3A5F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Conciliação bancária</h3>
+        <p>Conecte sua conta bancária e importe seu extrato automaticamente — suas receitas e despesas já ficam organizadas.</p>
+        <button class="integ-badge integ-badge-plano" data-plan="profissional" aria-label="Disponível nos planos Profissional e Plus — clique para ver">Planos Profissional e Plus</button>
+      </div>
+
+
+    </div>
+
+    <div class="integracoes-footer">
+      <p>Todas as integrações são configuradas em poucos cliques, direto nas configurações da SATTA. Sem precisar de técnico ou desenvolvedor.</p>
+      <a href="/integracoes">Ver documentação das integrações &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- PREÇOS -->
+<section class="precos" id="precos">
+  <div class="container">
+    <div class="section-head" style="text-align:center">
+      <p class="section-label">Planos</p>
+      <h2 class="section-title">Escolha o plano certo para você</h2>
+      <p class="section-sub" style="margin:0 auto">Sem fidelidade. Cancele quando quiser.</p>
+    </div>
+
+    <span class="precos-intro">Todos os planos incluem 14 dias de teste grátis — comece hoje, pague só se gostar.</span>
+
+    <div class="billing-toggle-wrap">
+      <div class="billing-toggle" role="tablist" aria-label="Forma de cobrança">
+        <button class="billing-btn active" data-billing="mensal" type="button">Mensal</button>
+        <button class="billing-btn" data-billing="anual" type="button">Anual <span class="billing-badge">-20%</span></button>
+      </div>
+    </div>
+
+    <div class="planos-scroll">
+      <div class="planos-grid">
+
+        <!-- BÁSICO -->
+        <div class="plano" data-plan="basico">
+          <p class="plano-nome">Básico</p>
+          <p class="plano-desc">Para quem está começando e quer organizar o negócio sem complicação</p>
+          <div class="plano-preco"
+               data-mensal-valor="R$&nbsp;49,90"
+               data-mensal-hint="ou R$ 479/ano com 20% de desconto"
+               data-anual-valor="R$&nbsp;39,90"
+               data-anual-hint="cobrado R$ 479/ano — 20% de desconto">
+            <div class="plano-valor-row">
+              <span class="plano-valor">R$&nbsp;49,90</span>
+              <span class="plano-mes">/mês</span>
+            </div>
+            <p class="plano-anual-hint">ou R$ 479/ano com 20% de desconto</p>
+          </div>
+          <p class="plano-usuarios">2 usuários</p>
+          <ul class="plano-recursos">
+            <li>Agenda, clientes, vendas e serviços</li>
+            <li>Controle financeiro e de estoque</li>
+            <li>Relatórios de vendas e ticket médio</li>
+            <li class="kango-li">A Kango responde suas perguntas e reconhece o padrão de visita de cada cliente</li>
+            <li>Cobranças via Asaas (boleto e Pix)</li>
+            <li>Suporte via chat</li>
+          </ul>
+          <div class="plano-cta-wrap">
+            <a href="https://satta-crm-production.up.railway.app/criar-conta" class="btn btn-outline" style="width:100%;justify-content:center">Teste Grátis — 14 dias</a>
+            <a href="https://satta-crm-production.up.railway.app/criar-conta?plano=basic&checkout=1" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px">Assinar agora</a>
+            <p class="plano-cta-sub">Cancele quando quiser.</p>
+          </div>
+        </div>
+
+        <!-- PROFISSIONAL -->
+        <div class="plano popular" data-plan="profissional">
+          <span class="plano-badge badge-popular">Mais popular</span>
+          <p class="plano-nome">Profissional</p>
+          <p class="plano-desc">Para negócios em crescimento que querem a Kango trabalhando no WhatsApp</p>
+          <div class="plano-preco">
+            <div class="plano-valor-row">
+              <span class="plano-valor">R$&nbsp;59,90</span>
+              <span class="plano-mes">/mês</span>
+            </div>
+          </div>
+          <p class="plano-usuarios">5 usuários</p>
+          <ul class="plano-recursos">
+            <li>Tudo do plano Básico</li>
+            <li class="kango-li">A Kango responde e agenda pelo WhatsApp automaticamente</li>
+            <li class="kango-li">A Kango identifica clientes que sumiram e tenta trazê-los de volta</li>
+            <li>WhatsApp Business, Google Agenda e Open Finance</li>
+          </ul>
+          <div class="plano-cta-wrap">
+            <a href="https://satta-crm-production.up.railway.app/criar-conta" class="btn btn-outline" style="width:100%;justify-content:center">Teste Grátis — 14 dias</a>
+            <a href="https://satta-crm-production.up.railway.app/criar-conta?plano=pro&checkout=1" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px">Assinar agora</a>
+            <p class="plano-cta-sub">Cancele quando quiser.</p>
+          </div>
+        </div>
+
+        <!-- BUSINESS -->
+        <div class="plano" data-plan="plus">
+          <p class="plano-nome">Business</p>
+          <p class="plano-desc">Para negócios que querem dados e consultoria da SATTA Analytics todo mês</p>
+          <div class="plano-preco">
+            <div class="plano-valor-row">
+              <span class="plano-valor">R$&nbsp;129,90</span>
+              <span class="plano-mes">/mês</span>
+            </div>
+          </div>
+          <p class="plano-usuarios">Usuários ilimitados</p>
+          <ul class="plano-recursos">
+            <li>Tudo do plano Profissional</li>
+            <li>Reunião mensal com analista de dados da SATTA Analytics (1h por vídeo)</li>
+            <li>Relatório mensal do negócio por email</li>
+          </ul>
+          <div class="plano-cta-wrap" style="margin-top:20px">
+            <a href="https://satta-crm-production.up.railway.app/criar-conta" class="btn btn-outline" style="width:100%;justify-content:center">Teste Grátis — 14 dias</a>
+            <a href="https://satta-crm-production.up.railway.app/criar-conta?plano=enterprise&checkout=1" class="btn btn-verde" style="width:100%;justify-content:center;margin-top:8px">Assinar agora</a>
+            <p class="plano-cta-sub">Cancele quando quiser.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Explicação da reunião mensal -->
+    <div class="analista-box">
+      <div class="analista-box-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          <circle cx="15" cy="16" r="2"/><path d="M11 16h-2a2 2 0 0 0-2 2v1"/>
+        </svg>
+      </div>
+      <div class="analista-box-text">
+        <h3>O que é a reunião mensal com analista?</h3>
+        <p>Uma vez por mês, um analista de dados da SATTA Analytics se reúne com você por videoconferência para analisar os dados do seu negócio: o que está vendendo mais, quais clientes estão sumindo, onde você pode ganhar mais. É como ter um consultor de dados particular, no preço de um plano de software.</p>
+      </div>
+    </div>
+
+    <!-- Garantias -->
+    <div class="garantias">
+      <div class="garantia-item">
+        <svg class="garantia-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Suporte incluído em todos os planos
+      </div>
+      <div class="garantia-item">
+        <svg class="garantia-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        Sem fidelidade — cancele quando quiser
+      </div>
+      <div class="garantia-item">
+        <svg class="garantia-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        14 dias grátis sem cartão de crédito
+      </div>
+      <div class="garantia-item">
+        <svg class="garantia-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Seus dados sempre seguros
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-head">
+      <p class="section-label">Dúvidas</p>
+      <h2 class="section-title">Perguntas frequentes</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Preciso saber mexer com tecnologia?</summary>
+        <div class="faq-resposta">Não. A SATTA foi desenvolvida para quem não é técnico. A interface é simples e a Kango te ajuda a navegar pelo sistema em linguagem natural. Se tiver dúvida, nossa equipe ajuda a configurar tudo.</div>
+      </details>
+      <details>
+        <summary>Como a Kango funciona na prática?</summary>
+        <div class="faq-resposta">A Kango é uma IA integrada à SATTA que você conversa como se fosse uma mensagem de texto. Você pergunta "quanto faturei esse mês?" e ela responde com os números do seu negócio. Você pede "agenda um horário pra Maria amanhã às 10h" e ela cria o agendamento e manda confirmação para o cliente.</div>
+      </details>
+      <details>
+        <summary>Funciona para o meu tipo de negócio?</summary>
+        <div class="faq-resposta">A SATTA foi desenvolvida para pequenos e médios negócios brasileiros que atendem pessoas: barbearias, salões, clínicas, petshops, pousadas, lava-rápidos e mais. Se o seu negócio tem clientes, agenda ou caixa para controlar, a SATTA funciona para você.</div>
+      </details>
+      <details>
+        <summary>Como funciona o WhatsApp na SATTA?</summary>
+        <div class="faq-resposta">A SATTA conecta o WhatsApp da sua empresa via QR code — igual ao WhatsApp Web. A Kango responde mensagens e agenda horários automaticamente. O envio de mensagens tem custo por mensagem cobrado pela Meta, incluído em um volume mensal em cada plano. Esta funcionalidade está disponível nos planos Profissional e Plus.</div>
+      </details>
+      <details>
+        <summary>Meus dados ficam seguros?</summary>
+        <div class="faq-resposta">Sim. Os dados do seu negócio ficam armazenados de forma segura e não são compartilhados com terceiros. A SATTA é desenvolvida pela SATTA Analytics com práticas modernas de segurança.</div>
+      </details>
+      <details>
+        <summary>Tem fidelidade ou contrato?</summary>
+        <div class="faq-resposta">Não. A SATTA é cobrada mensalmente e você pode cancelar quando quiser, sem multa e sem burocracia.</div>
+      </details>
+      <details>
+        <summary>O que é a reunião com analista de dados do plano Profissional Plus?</summary>
+        <div class="faq-resposta">Uma vez por mês, um analista de dados da SATTA Analytics agenda uma conversa com você por videoconferência para analisar os números do seu negócio, identificar oportunidades e ajudar a tomar decisões com base nos seus dados reais. É como ter um consultor de dados particular, incluído no plano.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-split">
+    <div class="cta-split-img">
+      <img src="kango-thumbs.png" alt="Kango, a IA da SATTA" aria-hidden="true">
+    </div>
+    <div class="cta-split-text">
+      <h2>Organize sua agenda, seus clientes e seu financeiro — a Kango faz o trabalho por você</h2>
+      <p>Comece hoje. Se não gostar em 14 dias, não paga nada.</p>
+      <a href="https://satta-crm-production.up.railway.app/criar-conta" class="btn-cta-final" aria-label="Começar teste grátis de 14 dias">Teste Grátis</a>
+      <p class="cta-final-sub">Sem cartão de crédito. Cancele quando quiser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RODAPÉ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="wordmark">SATTA<span style="font-size:12px;opacity:.45;margin-left:5px">CRM</span></span>
+        <p>SATTA é um produto da SATTA Analytics, empresa brasileira especializada em dados e inteligência artificial para pequenos e médios negócios.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produto</h4>
+        <ul>
+          <li><a href="#solucao">Como funciona</a></li>
+          <li><a href="#nichos">Para quem é</a></li>
+          <li><a href="#integracoes">Integrações</a></li>
+          <li><a href="#precos">Preços</a></li>
+          <li><a href="#faq">Dúvidas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Sobre a SATTA Analytics</a></li>
+          <li><a href="mailto:contato@sattaanalytics.com.br">Contato</a></li>
+          <li><a href="/politica-de-privacidade.html">Política de Privacidade</a></li>
+          <li><a href="/politica-de-reembolso.html">Política de Reembolso</a></li>
+          <li><a href="/termos-de-uso.html">Termos de Uso</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><a href="https://instagram.com/satta.analytics" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://wa.me/5511976280255" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="mailto:contato@sattaanalytics.com.br">contato@sattaanalytics.com.br</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 SATTA Analytics. Todos os direitos reservados.</p>
+      <p>CNPJ [placeholder]</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ MODAL TRIAL ═══ -->
+<div id="modal-trial" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mt-title">
+  <div class="modal-box">
+    <button class="modal-close" id="mt-close" aria-label="Fechar">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1l11 11M12 1L1 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-inner">
+      <div class="modal-dots" id="mt-dots" aria-hidden="true"></div>
+
+      <!-- Confirmação de saída -->
+      <div class="modal-step" id="mt-confirm">
+        <div class="modal-confirm-box">
+          <p>Tem certeza?<br>Seu progresso será perdido.</p>
+          <div class="modal-row">
+            <button class="modal-btn modal-btn-back" id="mt-keep">Continuar cadastro</button>
+            <button class="modal-btn modal-btn-primary" id="mt-quit">Sair</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="modal-step" id="mt-loading">
+        <div class="modal-loading">
+          <img src="/kango-thinking.png" alt="" />
+          <p>A Kango está preparando seu espaço…</p>
+        </div>
+      </div>
+
+      <!-- Step 1: E-mail -->
+      <div class="modal-step" id="mt-s1">
+        <span class="modal-wordmark">SATTA<span>CRM</span></span>
+        <h2 class="modal-title" id="mt-title">Crie a sua conta</h2>
+        <p class="modal-sub">14 dias grátis. Sem cartão de crédito.</p>
+        <div class="modal-err" id="mt-err1"></div>
+        <div class="modal-field">
+          <label class="modal-label" for="mt-email">E-mail</label>
+          <input class="modal-input" type="email" id="mt-email" placeholder="seu@email.com" autocomplete="email" />
+        </div>
+        <button class="modal-btn modal-btn-primary" id="mt-s1-next">Registre-se</button>
+        <div class="modal-divider">ou</div>
+        <button class="modal-btn modal-btn-ghost" id="mt-google" type="button">
+          <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/></svg>
+          Continuar com Google
+        </button>
+        <p class="modal-footer-note">Ao registrar-se, você aceita os <a href="/termos-de-uso.html" target="_blank">Termos de Uso</a> e a <a href="/politica-de-privacidade.html" target="_blank">Política de Privacidade</a> da SATTA.</p>
+      </div>
+
+      <!-- Step 2: Nome + Senha -->
+      <div class="modal-step" id="mt-s2">
+        <h2 class="modal-title">Crie sua senha</h2>
+        <p class="modal-sub">Quase lá — dados de acesso.</p>
+        <div class="modal-err" id="mt-err2"></div>
+        <div class="modal-field">
+          <label class="modal-label" for="mt-name">Seu nome</label>
+          <input class="modal-input" type="text" id="mt-name" placeholder="Nome completo" autocomplete="name" />
+        </div>
+        <div class="modal-field">
+          <label class="modal-label" for="mt-pwd">Senha</label>
+          <div class="modal-input-wrap">
+            <input class="modal-input" type="password" id="mt-pwd" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+            <button class="modal-eye" type="button" id="mt-pwd-eye" aria-label="Mostrar senha">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="pwd-bars" id="mt-pwd-bars"><div class="pwd-bar"></div><div class="pwd-bar"></div><div class="pwd-bar"></div><div class="pwd-bar"></div></div>
+          <span class="pwd-label" id="mt-pwd-label"></span>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label" for="mt-pwd2">Confirmar senha</label>
+          <div class="modal-input-wrap">
+            <input class="modal-input" type="password" id="mt-pwd2" placeholder="Repita a senha" autocomplete="new-password" />
+            <button class="modal-eye" type="button" id="mt-pwd2-eye" aria-label="Mostrar senha">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="modal-row">
+          <button class="modal-btn modal-btn-back" id="mt-s2-back">Voltar</button>
+          <button class="modal-btn modal-btn-primary" id="mt-s2-next">Próximo</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Negócio -->
+      <div class="modal-step" id="mt-s3">
+        <h2 class="modal-title">Seu negócio</h2>
+        <p class="modal-sub">Como se chama e como falar com você.</p>
+        <div class="modal-err" id="mt-err3"></div>
+        <div class="modal-field">
+          <label class="modal-label" for="mt-biz">Nome do negócio</label>
+          <input class="modal-input" type="text" id="mt-biz" placeholder="Ex: Barbearia do João" autocomplete="organization" />
+        </div>
+        <div class="modal-field">
+          <label class="modal-label" for="mt-phone">WhatsApp</label>
+          <input class="modal-input" type="tel" id="mt-phone" placeholder="(11) 99999-9999" autocomplete="tel" />
+        </div>
+        <div class="modal-row">
+          <button class="modal-btn modal-btn-back" id="mt-s3-back">Voltar</button>
+          <button class="modal-btn modal-btn-primary" id="mt-s3-next">Próximo</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Segmento -->
+      <div class="modal-step" id="mt-s4">
+        <h2 class="modal-title">Qual é o seu negócio?</h2>
+        <p class="modal-sub">Vamos personalizar a SATTA para você.</p>
+        <div class="modal-err" id="mt-err4"></div>
+        <div class="modal-segs">
+          <button class="modal-seg" data-seg="barbershop" type="button"><span class="modal-seg-icon">✂️</span>Barbearia</button>
+          <button class="modal-seg" data-seg="beauty_salon" type="button"><span class="modal-seg-icon">💅</span>Salão de beleza</button>
+          <button class="modal-seg" data-seg="petshop" type="button"><span class="modal-seg-icon">🐾</span>Petshop</button>
+          <button class="modal-seg" data-seg="clinic" type="button"><span class="modal-seg-icon">🩺</span>Clínica</button>
+          <button class="modal-seg" data-seg="car_wash" type="button"><span class="modal-seg-icon">🚗</span>Lava-rápido</button>
+          <button class="modal-seg" data-seg="restaurant" type="button"><span class="modal-seg-icon">🍽️</span>Restaurante</button>
+          <button class="modal-seg" data-seg="hotel" type="button"><span class="modal-seg-icon">🏡</span>Pousada</button>
+          <button class="modal-seg" data-seg="other" type="button"><span class="modal-seg-icon">☐</span>Outro</button>
+        </div>
+        <div class="modal-row" style="margin-top:20px">
+          <button class="modal-btn modal-btn-back" id="mt-s4-back">Voltar</button>
+          <button class="modal-btn modal-btn-primary" id="mt-s4-submit">Criar minha conta</button>
+        </div>
+        <p class="modal-footer-note" style="margin-top:16px">Ao criar conta, você aceita os <a href="/termos-de-uso.html" target="_blank">Termos de Uso</a> e a <a href="/politica-de-privacidade.html" target="_blank">Política de Privacidade</a> da SATTA.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL LOGIN ═══ -->
+<div id="modal-login" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ml-title">
+  <div class="modal-box">
+    <button class="modal-close" id="ml-close" aria-label="Fechar">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1 1l11 11M12 1L1 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="modal-inner">
+      <span class="modal-wordmark">SATTA<span>CRM</span></span>
+      <h2 class="modal-title" id="ml-title">Entrar na SATTA</h2>
+      <p class="modal-sub">Acesse sua conta para continuar.</p>
+      <div class="modal-err" id="ml-err"></div>
+      <div class="modal-field">
+        <label class="modal-label" for="ml-email">E-mail</label>
+        <input class="modal-input" type="email" id="ml-email" placeholder="seu@email.com" autocomplete="email" />
+      </div>
+      <div class="modal-field">
+        <label class="modal-label" for="ml-pwd">Senha</label>
+        <div class="modal-input-wrap">
+          <input class="modal-input" type="password" id="ml-pwd" placeholder="Sua senha" autocomplete="current-password" />
+          <button class="modal-eye" type="button" id="ml-pwd-eye" aria-label="Mostrar senha">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="ml-forgot"><a href="/recuperar-senha">Esqueci minha senha</a></div>
+      <button class="modal-btn modal-btn-primary" id="ml-submit">Entrar</button>
+      <div class="modal-divider">ou</div>
+      <button class="modal-btn modal-btn-ghost" type="button" id="ml-google">
+        <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.706c-.18-.54-.282-1.117-.282-1.706s.102-1.166.282-1.706V4.962H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.962L3.964 7.294C4.672 5.167 6.656 3.58 9 3.58z"/></svg>
+        Continuar com Google
+      </button>
+      <p class="modal-footer-note" style="margin-top:20px">Ainda não tem conta? <a href="#" id="ml-to-trial">Teste Grátis →</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Toggle mensal/anual
+  document.querySelectorAll('.billing-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.billing-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const billing = btn.dataset.billing;
+      document.querySelectorAll('.plano-preco[data-mensal-valor]').forEach(bloco => {
+        const valorEl  = bloco.querySelector('.plano-valor');
+        const hintEl   = bloco.querySelector('.plano-anual-hint');
+        if (billing === 'anual') {
+          valorEl.innerHTML = bloco.dataset.anualValor;
+          if (hintEl) hintEl.textContent = bloco.dataset.anualHint;
+        } else {
+          valorEl.innerHTML = bloco.dataset.mensalValor;
+          if (hintEl) hintEl.textContent = bloco.dataset.mensalHint;
+        }
+      });
+    });
+  });
+
+  // Badge de integração → scroll + pulse no plano correspondente
+  document.querySelectorAll('.integ-badge-plano[data-plan]').forEach(badge => {
+    badge.addEventListener('click', () => {
+      const section = document.getElementById('precos');
+      section.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        // highlight profissional and plus cards
+        document.querySelectorAll('.plano[data-plan="profissional"], .plano[data-plan="plus"]').forEach(card => {
+          card.classList.remove('pulsar');
+          void card.offsetWidth; // reflow
+          card.classList.add('pulsar');
+          setTimeout(() => card.classList.remove('pulsar'), 1500);
+        });
+      }, 700);
+    });
+  });
+</script>
+
+<script>
+/* Firebase é carregado só quando o usuário clica em Criar conta */
+let _fb = null
+async function getFB() {
+  if (_fb) return _fb
+  await Promise.all([
+    new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js'; s.onload=res; s.onerror=rej; document.head.appendChild(s) }),
+  ]).then(()=> Promise.all([
+    new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js'; s.onload=res; s.onerror=rej; document.head.appendChild(s) }),
+    new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js'; s.onload=res; s.onerror=rej; document.head.appendChild(s) }),
+  ]))
+  if (!firebase.apps.length) firebase.initializeApp({ apiKey:'AIzaSyBCHoP1WKk-7MgUxBllz4MlrkZtyHAl0ZA', authDomain:'satta-crm.firebaseapp.com', projectId:'satta-crm', storageBucket:'satta-crm.firebasestorage.app', messagingSenderId:'749147063399', appId:'1:749147063399:web:033343577472ba916e00c2' })
+  _fb = { auth: firebase.auth(), db: firebase.firestore() }
+  return _fb
+}
+
+/* ── helpers ──────────────────────────────────────────── */
+function showErr(id, msg) { const el=document.getElementById(id); el.textContent=msg; el.style.display='block' }
+function hideErrs(prefix) { document.querySelectorAll(`[id^="${prefix}-err"]`).forEach(e=>e.style.display='none') }
+function lockScroll()   { document.body.style.overflow='hidden' }
+function unlockScroll() { document.body.style.overflow='' }
+
+function eyeToggle(inputId, btnId) {
+  document.getElementById(btnId).addEventListener('click', () => {
+    const inp = document.getElementById(inputId)
+    inp.type = inp.type==='password' ? 'text' : 'password'
+  })
+}
+eyeToggle('mt-pwd','mt-pwd-eye'); eyeToggle('mt-pwd2','mt-pwd2-eye'); eyeToggle('ml-pwd','ml-pwd-eye')
+
+function fmtPhone(v) {
+  const d = v.replace(/\D/g,'').slice(0,11)
+  if (d.length<=2) return d
+  if (d.length<=6) return `(${d.slice(0,2)}) ${d.slice(2)}`
+  if (d.length<=10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`
+  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`
+}
+document.getElementById('mt-phone').addEventListener('input',function(){ this.value=fmtPhone(this.value) })
+
+/* ── password strength ────────────────────────────────── */
+document.getElementById('mt-pwd').addEventListener('input', function() {
+  const v=this.value; let s=0
+  if(v.length>=8)s++; if(v.length>=12)s++; if(/\d/.test(v))s++; if(/[^a-zA-Z0-9]/.test(v))s++
+  const cols=['#5C1010','#8B3A0A','#8B5E0A','#1E3A5F','#1A3D2B']
+  const lbls=['Muito fraca','Fraca','Razoável','Boa','Forte']
+  const c = v ? (cols[Math.min(s,4)]||cols[0]) : '#DDD9D0'
+  document.querySelectorAll('#mt-pwd-bars .pwd-bar').forEach((b,i)=>{ b.style.background=i<s?c:'#DDD9D0' })
+  const lbl=document.getElementById('mt-pwd-label'); lbl.textContent=v?lbls[Math.min(s,4)]:''; lbl.style.color=c
+})
+
+/* ══ TRIAL MODAL ══════════════════════════════════════════ */
+let tStep=1, tPlan=null, tHasData=false, tLastFocus=null, tConfirming=false
+
+function tShow(id) {
+  document.querySelectorAll('#modal-trial .modal-step').forEach(e=>e.classList.remove('visible'))
+  document.getElementById(id).classList.add('visible')
+}
+
+function tDots() {
+  const el=document.getElementById('mt-dots'); el.innerHTML=''; el.style.display='flex'
+  for(let i=1;i<=4;i++){
+    const d=document.createElement('div')
+    d.className='modal-dot'+(i===tStep?' active':i<tStep?' done':'')
+    el.appendChild(d)
+  }
+}
+
+function tGo(step) {
+  tStep=step; tConfirming=false
+  hideErrs('mt')
+  tDots()
+  tShow(`mt-s${step}`)
+  const firstInput = document.querySelector(`#mt-s${step} .modal-input, #mt-s${step} .modal-seg`)
+  setTimeout(()=>firstInput?.focus(), 60)
+}
+
+function openTrialModal(plan) {
+  tLastFocus=document.activeElement; tPlan=plan||null
+  tHasData=false; tConfirming=false
+  document.querySelectorAll('.modal-seg').forEach(b=>b.classList.remove('sel'))
+  ;['mt-email','mt-name','mt-pwd','mt-pwd2','mt-biz','mt-phone'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value='' })
+  document.getElementById('mt-pwd-label').textContent=''
+  document.querySelectorAll('#mt-pwd-bars .pwd-bar').forEach(b=>b.style.background='#DDD9D0')
+  tGo(1)
+  document.getElementById('modal-trial').classList.add('open')
+  lockScroll()
+  setTimeout(()=>document.getElementById('mt-email').focus(), 100)
+}
+
+function closeTrial(force) {
+  if (!force && tHasData && !tConfirming) {
+    tConfirming=true
+    document.getElementById('mt-dots').style.display='none'
+    tShow('mt-confirm')
+    return
+  }
+  document.getElementById('modal-trial').classList.remove('open')
+  unlockScroll()
+  tLastFocus?.focus()
+}
+
+document.getElementById('mt-close').addEventListener('click', ()=>closeTrial())
+document.getElementById('mt-keep').addEventListener('click', ()=>{ tConfirming=false; tDots(); tShow(`mt-s${tStep}`) })
+document.getElementById('mt-quit').addEventListener('click', ()=>closeTrial(true))
+document.getElementById('modal-trial').addEventListener('click', e=>{ if(e.target===document.getElementById('modal-trial')) closeTrial() })
+
+/* step inputs mark hasData */
+;['mt-email','mt-name','mt-pwd','mt-biz','mt-phone'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('input',()=>{ tHasData=true })
+})
+
+/* step 1 → 2 */
+document.getElementById('mt-s1-next').addEventListener('click', ()=>{
+  const email=document.getElementById('mt-email').value.trim()
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr('mt-err1','Informe um e-mail válido.')
+  tHasData=true; tGo(2)
+})
+
+/* step 2 → 3 */
+document.getElementById('mt-s2-back').addEventListener('click',()=>tGo(1))
+document.getElementById('mt-s2-next').addEventListener('click',()=>{
+  const n=document.getElementById('mt-name').value.trim()
+  const p=document.getElementById('mt-pwd').value
+  const p2=document.getElementById('mt-pwd2').value
+  if(!n) return showErr('mt-err2','Informe seu nome.')
+  if(p.length<8) return showErr('mt-err2','A senha deve ter pelo menos 8 caracteres.')
+  if(p!==p2) return showErr('mt-err2','As senhas não coincidem.')
+  tGo(3)
+})
+
+/* step 3 → 4 */
+document.getElementById('mt-s3-back').addEventListener('click',()=>tGo(2))
+document.getElementById('mt-s3-next').addEventListener('click',()=>{
+  const biz=document.getElementById('mt-biz').value.trim()
+  const phone=document.getElementById('mt-phone').value.replace(/\D/g,'')
+  if(!biz) return showErr('mt-err3','Informe o nome do negócio.')
+  if(phone.length<10) return showErr('mt-err3','Informe um WhatsApp válido.')
+  tGo(4)
+})
+
+/* segment selection */
+document.querySelectorAll('.modal-seg').forEach(b=>{
+  b.addEventListener('click',()=>{ document.querySelectorAll('.modal-seg').forEach(x=>x.classList.remove('sel')); b.classList.add('sel') })
+})
+
+/* step 4 → criar conta */
+document.getElementById('mt-s4-back').addEventListener('click',()=>tGo(3))
+document.getElementById('mt-s4-submit').addEventListener('click', async()=>{
+  const seg=document.querySelector('.modal-seg.sel')?.dataset.seg
+  if(!seg) return showErr('mt-err4','Selecione o tipo de negócio.')
+  const email=document.getElementById('mt-email').value.trim()
+  const name=document.getElementById('mt-name').value.trim()
+  const pwd=document.getElementById('mt-pwd').value
+  const biz=document.getElementById('mt-biz').value.trim()
+  const rawPhone=document.getElementById('mt-phone').value.replace(/\D/g,'')
+  document.getElementById('mt-dots').style.display='none'
+  tShow('mt-loading')
+  try {
+    const {auth,db} = await getFB()
+    const cred=await auth.createUserWithEmailAndPassword(email,pwd)
+    await cred.user.updateProfile({displayName:name})
+    await cred.user.sendEmailVerification()
+    await db.collection('empresas').doc(cred.user.uid).set({
+      nome:biz, nicho:seg, responsavel:name,
+      telefone:rawPhone, plano:tPlan||'trial',
+      createdAt:new Date().toISOString()
+    })
+    // Empresa already saved — go directly to dashboard
+    // PrivateRoute will redirect to /onboarding only if empresa is missing (e.g. Google sign-in path)
+    window.location.href='/'
+  } catch(err) {
+    const msgs={'auth/email-already-in-use':'Este e-mail já está cadastrado.','auth/invalid-email':'E-mail inválido.','auth/weak-password':'Senha muito fraca.'}
+    tGo(4)
+    showErr('mt-err4', msgs[err.code]||'Erro ao criar conta. Tente novamente.')
+  }
+})
+
+/* ── Google sign-in (trial) ── */
+document.getElementById('mt-google').addEventListener('click', async()=>{
+  try {
+    const {auth} = await getFB()
+    await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    // No empresa saved yet for Google users — PrivateRoute will redirect to /onboarding
+    window.location.href='/'
+  } catch(e) { if(e.code!=='auth/popup-closed-by-user') showErr('mt-err1','Erro ao entrar com Google.') }
+})
+
+/* ══ LOGIN MODAL ══════════════════════════════════════════ */
+let lLastFocus=null
+
+function openLoginModal() {
+  lLastFocus=document.activeElement
+  document.getElementById('ml-err').style.display='none'
+  ;['ml-email','ml-pwd'].forEach(id=>{ document.getElementById(id).value='' })
+  document.getElementById('modal-login').classList.add('open')
+  lockScroll()
+  setTimeout(()=>document.getElementById('ml-email').focus(), 100)
+}
+
+function closeLogin() {
+  document.getElementById('modal-login').classList.remove('open')
+  unlockScroll()
+  lLastFocus?.focus()
+}
+
+document.getElementById('ml-close').addEventListener('click',closeLogin)
+document.getElementById('modal-login').addEventListener('click',e=>{ if(e.target===document.getElementById('modal-login')) closeLogin() })
+document.getElementById('ml-to-trial').addEventListener('click',e=>{ e.preventDefault(); closeLogin(); openTrialModal() })
+
+document.getElementById('ml-submit').addEventListener('click', async()=>{
+  const email=document.getElementById('ml-email').value.trim()
+  const pwd=document.getElementById('ml-pwd').value
+  const errEl=document.getElementById('ml-err')
+  errEl.style.display='none'
+  if(!email||!pwd){ errEl.textContent='Preencha e-mail e senha.'; errEl.style.display='block'; return }
+  const btn=document.getElementById('ml-submit'); btn.textContent='Aguarde…'; btn.disabled=true
+  try {
+    const {auth} = await getFB()
+    await auth.signInWithEmailAndPassword(email,pwd)
+    window.location.href='/'
+  } catch(err) {
+    const msgs={'auth/user-not-found':'E-mail não encontrado.','auth/wrong-password':'Senha incorreta.','auth/invalid-email':'E-mail inválido.','auth/invalid-credential':'E-mail ou senha incorretos.'}
+    errEl.textContent=msgs[err.code]||'Erro ao entrar. Tente novamente.'; errEl.style.display='block'
+  } finally { btn.textContent='Entrar'; btn.disabled=false }
+})
+
+document.getElementById('ml-google').addEventListener('click', async()=>{
+  const errEl=document.getElementById('ml-err')
+  errEl.style.display='none'
+  const btn=document.getElementById('ml-google'); btn.disabled=true
+  try {
+    const {auth} = await getFB()
+    const provider = new firebase.auth.GoogleAuthProvider()
+    await auth.signInWithPopup(provider)
+    window.location.href='/'
+  } catch(e) {
+    if(e.code!=='auth/popup-closed-by-user'){ errEl.textContent='Erro ao entrar com Google.'; errEl.style.display='block' }
+  } finally { btn.disabled=false }
+})
+
+/* ══ ESC + focus trap ═════════════════════════════════════ */
+document.addEventListener('keydown', e=>{
+  if(e.key!=='Escape') return
+  if(document.getElementById('modal-trial').classList.contains('open')) closeTrial()
+  else if(document.getElementById('modal-login').classList.contains('open')) closeLogin()
+})
+
+function trapFocus(modalId) {
+  const modal=document.getElementById(modalId)
+  modal.addEventListener('keydown', e=>{
+    if(e.key!=='Tab') return
+    const all=[...modal.querySelectorAll('button:not([disabled]),input,a[href]')].filter(el=>!el.closest('.modal-step:not(.visible)'))
+    if(!all.length) return
+    const first=all[0], last=all[all.length-1]
+    if(e.shiftKey){ if(document.activeElement===first){ e.preventDefault(); last.focus() } }
+    else { if(document.activeElement===last){ e.preventDefault(); first.focus() } }
+  })
+}
+trapFocus('modal-trial'); trapFocus('modal-login')
+
+/* funções globais para onclick inline */
+window.openTrialModal = openTrialModal
+window.openLoginModal = openLoginModal
+</script>
+
+</body>
+</html>
