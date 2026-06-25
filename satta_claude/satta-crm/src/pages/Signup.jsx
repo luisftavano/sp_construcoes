@@ -289,7 +289,19 @@ export default function Signup() {
       <div className="flex-1 flex items-center justify-center px-8 py-12 bg-surface overflow-y-auto">
         <div className="w-full max-w-sm">
 
-          <img src="/logo-satta-branco.png" alt="Satta CRM" className="h-7 mb-8 object-contain object-left" />
+          <img src="/logo-satta-branco.png" alt="Satta CRM" className="h-7 mb-6 object-contain object-left" />
+
+          {checkoutMode && planoParam && (
+            <div className="flex items-start gap-2.5 bg-ink-light border border-ink/20 rounded-lg px-4 py-3 mb-6">
+              <div className="w-2 h-2 rounded-full bg-ink shrink-0 mt-1.5" />
+              <div>
+                <p className="text-xs font-medium text-ink">Criando conta para assinar</p>
+                <p className="text-xs text-text-2 mt-0.5">
+                  Após criar sua conta, você será redirecionado para o pagamento.
+                </p>
+              </div>
+            </div>
+          )}
 
           <ProgressBar step={displayStep} total={totalSteps} />
 
@@ -565,7 +577,7 @@ export default function Signup() {
                 </button>
                 <button type="submit" disabled={loading || !aceitouTermos}
                   className="flex-1 bg-ink hover:bg-blue-hover text-white font-medium py-2.5 rounded-md text-sm transition-colors disabled:opacity-50">
-                  {loading ? 'Criando...' : 'Criar conta'}
+                  {loading ? 'Criando...' : checkoutMode ? 'Criar conta e pagar' : 'Criar conta'}
                 </button>
               </div>
             </form>
