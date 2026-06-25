@@ -165,6 +165,31 @@ export default function Signup() {
     setStep(s => s + 1)
   }
 
+  async function finalizarCheckout(e) {
+    e.preventDefault()
+    setErro('')
+    if (senha !== confirma) return setErro('As senhas não coincidem.')
+    if (senha.length < 8)   return setErro('A senha deve ter pelo menos 8 caracteres.')
+
+    setLoading(true)
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, senha)
+      await sendEmailVerification(cred.user)
+      await saveEmpresa(cred.user.uid, { plano: 'trial', trialStartedAt: new Date() })
+      await refreshEmpresa?.()
+      setAguardandoEmail(true)
+    } catch (err) {
+      const msgs = {
+        'auth/email-already-in-use': 'Este email já está cadastrado.',
+        'auth/invalid-email': 'Email inválido.',
+        'auth/weak-password': 'Senha muito fraca.',
+      }
+      setErro(msgs[err.code] || 'Erro ao criar conta. Tente novamente.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   async function finalizar(e) {
     e.preventDefault()
     setErro('')
@@ -281,6 +306,112 @@ export default function Signup() {
     )
   }
 
+  const NOMES_PLANO = { basic: 'Básico', pro: 'Profissional', enterprise: 'Business' }
+
+  // ── Formulário simplificado para checkout ──────────
+  if (checkoutMode) {
+    return (
+      <div className="min-h-screen flex bg-bg">
+        <div className="flex-1 flex items-center justify-center px-8 py-12 bg-surface overflow-y-auto">
+          <div className="w-full max-w-sm">
+            <img src="/logo-satta-branco.png" alt="Satta CRM" className="h-7 mb-8 object-contain object-left" />
+
+            <h1 className="font-bricolage text-xl font-semibold text-text mb-1">Criar conta</h1>
+            <p className="text-text-2 text-sm mb-6">
+              Crie sua conta para assinar o plano{' '}
+              <span className="font-medium text-text">{NOMES_PLANO[planoParam] || planoParam}</span>.
+              O pagamento é feito logo após.
+            </p>
+
+            <form onSubmit={finalizarCheckout}>
+              <div className="space-y-4 mb-5">
+                <div>
+                  <label className="block text-xs font-medium text-text-2 mb-1.5 uppercase tracking-wide">E-mail</label>
+                  <input
+                    type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    placeholder="seu@email.com" autoComplete="email" required
+                    className="w-full border border-border bg-bg rounded-md px-3.5 py-2.5 text-sm text-text focus:outline-none focus:border-border-strong focus:ring-1 focus:ring-ink/20 transition-all placeholder:text-text-3"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-text-2 mb-1.5 uppercase tracking-wide">Senha</label>
+                  <div className="relative">
+                    <input
+                      type={verSenha ? 'text' : 'password'} value={senha}
+                      onChange={e => setSenha(e.target.value)}
+                      placeholder="Mínimo 8 caracteres" required
+                      className="w-full border border-border bg-bg rounded-md px-3.5 py-2.5 pr-10 text-sm text-text focus:outline-none focus:border-border-strong focus:ring-1 focus:ring-ink/20 transition-all placeholder:text-text-3"
+                    />
+                    <button type="button" onClick={() => setVerSenha(v => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3 hover:text-text-2 transition-colors">
+                      {verSenha ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                  </div>
+                  <PasswordStrength password={senha} />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-text-2 mb-1.5 uppercase tracking-wide">Confirmar senha</label>
+                  <div className="relative">
+                    <input
+                      type={verConfirma ? 'text' : 'password'} value={confirma}
+                      onChange={e => setConfirma(e.target.value)}
+                      placeholder="Repita a senha" required
+                      className={`w-full border rounded-md px-3.5 py-2.5 pr-10 text-sm text-text bg-bg focus:outline-none focus:ring-1 focus:ring-ink/20 transition-all placeholder:text-text-3 ${
+                        confirma && confirma !== senha ? 'border-late-text' : 'border-border focus:border-border-strong'
+                      }`}
+                    />
+                    <button type="button" onClick={() => setVerConfirma(v => !v)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-text-3 hover:text-text-2 transition-colors">
+                      {verConfirma ? <EyeOff size={15} /> : <Eye size={15} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {erro && <p className="text-sm text-late-text mb-3">{erro}</p>}
+
+              <label className="flex items-start gap-2.5 cursor-pointer mb-4">
+                <input type="checkbox" checked={aceitouTermos} onChange={e => setAceitouTermos(e.target.checked)} className="mt-0.5 accent-ink" />
+                <span className="text-xs text-text-2 leading-relaxed">
+                  Li e aceito os{' '}
+                  <a href="/termos-de-uso" target="_blank" className="text-ink underline">Termos de Uso</a>
+                  {' '}e a{' '}
+                  <a href="/politica-de-privacidade" target="_blank" className="text-ink underline">Política de Privacidade</a>.
+                </span>
+              </label>
+
+              <button type="submit" disabled={loading || !aceitouTermos}
+                className="w-full bg-ink hover:bg-blue-hover text-white font-medium py-2.5 rounded-md text-sm transition-colors disabled:opacity-50">
+                {loading ? 'Criando...' : 'Criar conta e ir para pagamento'}
+              </button>
+            </form>
+
+            <p className="text-center text-sm text-text-2 mt-6">
+              Já tem conta?{' '}
+              <Link to="/login" className="text-ink font-medium hover:underline">Entrar</Link>
+            </p>
+          </div>
+        </div>
+
+        <div className="hidden lg:block relative flex-1 overflow-hidden">
+          <img src={FOTO} alt="" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ backgroundColor: 'rgba(30,58,95,0.82)' }} />
+          <div className="relative h-full flex flex-col justify-between p-12">
+            <img src="/logo-satta-branco.png" alt="Satta CRM" className="h-8 object-contain object-left brightness-0 invert" />
+            <div>
+              <p className="font-bricolage text-white text-2xl font-medium leading-snug mb-3 max-w-xs">
+                Controle simples para quem trabalha de verdade.
+              </p>
+              <p className="text-white/60 text-sm leading-relaxed max-w-xs">
+                CRM feito para barbearias, clínicas, salões e outros pequenos negócios brasileiros.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   // ── Formulário por steps ───────────────────────────
   return (
     <div className="min-h-screen flex bg-bg">
@@ -290,18 +421,6 @@ export default function Signup() {
         <div className="w-full max-w-sm">
 
           <img src="/logo-satta-branco.png" alt="Satta CRM" className="h-7 mb-6 object-contain object-left" />
-
-          {checkoutMode && planoParam && (
-            <div className="flex items-start gap-2.5 bg-ink-light border border-ink/20 rounded-lg px-4 py-3 mb-6">
-              <div className="w-2 h-2 rounded-full bg-ink shrink-0 mt-1.5" />
-              <div>
-                <p className="text-xs font-medium text-ink">Criando conta para assinar</p>
-                <p className="text-xs text-text-2 mt-0.5">
-                  Após criar sua conta, você será redirecionado para o pagamento.
-                </p>
-              </div>
-            </div>
-          )}
 
           <ProgressBar step={displayStep} total={totalSteps} />
 

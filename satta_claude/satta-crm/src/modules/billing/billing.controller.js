@@ -4,7 +4,7 @@ export async function createPortal(req, res) {
   try {
     const { getFirestore } = await import('firebase-admin/firestore')
     const db = getFirestore()
-    const snap = await db.collection('empresas').doc(req.accountId).get()
+    const snap = await db.collection('empresas').doc(req.uid).get()
     const stripeCustomerId = snap.data()?.stripeCustomerId
 
     if (!stripeCustomerId) {
@@ -28,7 +28,7 @@ export async function createCheckout(req, res) {
 
   try {
     const session = await billingService.createCheckoutSession(
-      req.accountId,
+      req.uid,
       req.email,
       planId,
     )

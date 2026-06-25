@@ -1,24 +1,38 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { saveEmpresa } from '../lib/firestore'
-import { nichos } from '../lib/nichos'
+import { saveEmpresa, updateEmpresa, getEmpresa } from '../lib/firestore'
+import { segmentos } from '../lib/nichos'
 
 export default function Onboarding() {
-  const { user, refreshEmpresa } = useAuth()
+  const { user, empresa, refreshEmpresa } = useAuth()
   const navigate = useNavigate()
   const [nome, setNome] = useState('')
   const [nicho, setNicho] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // If empresa already has nome and nicho set, skip onboarding
+  useEffect(() => {
+    if (empresa?.nome && empresa?.nicho) {
+      navigate('/', { replace: true })
+    }
+  }, [empresa, navigate])
 
   async function handleSubmit(e) {
     e.preventDefault()
     if (!user) return
     setLoading(true)
     try {
-      await saveEmpresa(user.uid, { nome, nicho })
+      // Check if document already exists to avoid overwriting signup data
+      const existing = await getEmpresa(user.uid)
+      if (existing) {
+        // Update only the fields the user just entered — preserve everything else
+        await updateEmpresa(user.uid, { nome, nicho })
+      } else {
+        await saveEmpresa(user.uid, { nome, nicho, plano: 'trial' })
+      }
       const emp = await refreshEmpresa()
-      if (emp) navigate('/')
+      if (emp) navigate('/', { replace: true })
     } catch {
       setLoading(false)
     }
@@ -62,7 +76,7 @@ export default function Onboarding() {
               Tipo de negócio
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {nichos.map(n => (
+              {segmentos.map(n => (
                 <button
                   key={n.id}
                   type="button"
