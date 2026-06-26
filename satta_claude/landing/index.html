@@ -909,9 +909,24 @@
       <div class="footer-col">
         <h4>Contato</h4>
         <ul>
-          <li><a href="https://instagram.com/satta.analytics" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="https://wa.me/5511976280255" target="_blank" rel="noopener">WhatsApp</a></li>
-          <li><a href="mailto:contato@sattaanalytics.com.br">contato@sattaanalytics.com.br</a></li>
+          <li>
+            <a href="https://instagram.com/satta.analytics" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;">
+              <img src="https://cdn.simpleicons.org/instagram/E4405F" alt="" width="14" height="14" style="display:inline-block;flex-shrink:0;" />
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a href="https://wa.me/5511976280255" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:7px;">
+              <img src="https://cdn.simpleicons.org/whatsapp/25D366" alt="" width="14" height="14" style="display:inline-block;flex-shrink:0;" />
+              WhatsApp
+            </a>
+          </li>
+          <li>
+            <a href="mailto:contato@sattaanalytics.com.br" style="display:flex;align-items:center;gap:7px;">
+              <img src="https://cdn.simpleicons.org/gmail/EA4335" alt="" width="14" height="14" style="display:inline-block;flex-shrink:0;" />
+              contato@sattaanalytics.com.br
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -1291,8 +1306,7 @@ document.getElementById('mt-s4-submit').addEventListener('click', async()=>{
       createdAt:new Date().toISOString()
     })
     // Empresa already saved — go directly to dashboard
-    // PrivateRoute will redirect to /onboarding only if empresa is missing (e.g. Google sign-in path)
-    window.location.href='/'
+    window.location.href='https://satta-crm-production.up.railway.app/'
   } catch(err) {
     const msgs={'auth/email-already-in-use':'Este e-mail já está cadastrado.','auth/invalid-email':'E-mail inválido.','auth/weak-password':'Senha muito fraca.'}
     tGo(4)
@@ -1304,9 +1318,15 @@ document.getElementById('mt-s4-submit').addEventListener('click', async()=>{
 document.getElementById('mt-google').addEventListener('click', async()=>{
   try {
     const {auth} = await getFB()
-    await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    // No empresa saved yet for Google users — PrivateRoute will redirect to /onboarding
-    window.location.href='/'
+    const provider = new firebase.auth.GoogleAuthProvider()
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+    if (isMobile) {
+      await auth.signInWithRedirect(provider)
+      // redirect vai sair da página — não precisa de window.location
+    } else {
+      await auth.signInWithPopup(provider)
+      window.location.href='https://satta-crm-production.up.railway.app/'
+    }
   } catch(e) { if(e.code!=='auth/popup-closed-by-user') showErr('mt-err1','Erro ao entrar com Google.') }
 })
 
@@ -1356,8 +1376,13 @@ document.getElementById('ml-google').addEventListener('click', async()=>{
   try {
     const {auth} = await getFB()
     const provider = new firebase.auth.GoogleAuthProvider()
-    await auth.signInWithPopup(provider)
-    window.location.href='/'
+    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+    if (isMobile) {
+      await auth.signInWithRedirect(provider)
+    } else {
+      await auth.signInWithPopup(provider)
+      window.location.href='https://satta-crm-production.up.railway.app/'
+    }
   } catch(e) {
     if(e.code!=='auth/popup-closed-by-user'){ errEl.textContent='Erro ao entrar com Google.'; errEl.style.display='block' }
   } finally { btn.disabled=false }
